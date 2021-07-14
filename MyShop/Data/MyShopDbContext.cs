@@ -2,11 +2,85 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using MyShop.Data.Models;
+
     public class MyShopDbContext : IdentityDbContext
     {
         public MyShopDbContext(DbContextOptions<MyShopDbContext> options)
             : base(options)
         {
+        }
+        public DbSet<Goods> Goods { get; init; }
+        public DbSet<Category> Categories { get; init; }
+        public DbSet<Chat> Chats { get; init; }
+        public DbSet<Comment> Comments { get; init; }
+        public DbSet<Purchase> Purchases { get; init; }
+        public DbSet<Town> Towns { get; init; }
+        public DbSet<User> Owners { get; init; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.Goods)
+                .WithMany(g => g.Chats)
+                .HasForeignKey(c => c.GoodsId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.Owner)
+                .WithMany(g => g.ChatsOwner)
+                .HasForeignKey(c => c.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.Buyer)
+                .WithMany(g => g.ChatsBayer)
+                .HasForeignKey(c => c.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Chat)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(c => c.ChatId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Owner)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(c => c.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(c => c.Buyer)
+                .WithMany(b => b.Purchases)
+                .HasForeignKey(c => c.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(c => c.Goods)
+                .WithMany(c => c.Purchases)
+                .HasForeignKey(c => c.GoodsId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Goods>()
+                .HasOne(c => c.Category)
+                .WithMany(c => c.Goods)
+                .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Goods>()
+                .HasOne(c => c.Town)
+                .WithMany(c => c.Goods)
+                .HasForeignKey(c => c.TownId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Goods>()
+                .HasOne(c => c.Owner)
+                .WithMany(c => c.Goods)
+                .HasForeignKey(c => c.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

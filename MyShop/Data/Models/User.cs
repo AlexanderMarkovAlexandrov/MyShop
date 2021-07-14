@@ -20,7 +20,9 @@
         [MaxLength(PasswordMaxLength)]
         public string Password { get; set; }
         public ICollection<Goods> Goods { get; init; }
-        public ICollection<Chat> Chats { get; init; }
+        public ICollection<Chat> ChatsOwner { get; init; }
+        public ICollection<Chat> ChatsBayer { get; init; }
         public ICollection<Comment> Comments { get; init; }
+        public ICollection<Purchase> Purchases { get; init; }
     }
 }

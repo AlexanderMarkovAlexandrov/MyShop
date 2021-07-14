@@ -12,6 +12,9 @@
         [Required]
         public string OwnerId { get; init; }
         public User Owner { get; init; }
+        [Required]
+        public string  ChatId { get; init; } 
+        public Chat Chat { get; init; }
         public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
         [Required]
         [MaxLength(ContentMaxLength)]

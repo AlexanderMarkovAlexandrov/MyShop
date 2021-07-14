@@ -13,6 +13,9 @@
         [Required]
         [MaxLength(TitleMaxLength)]
         public string Title { get; init; }
+        [Required]
+        [MaxLength(ImageUrlMaxLength)]
+        public string ImageUrl { get; set; }
         public double Price { get; set; }
         public int Pieces { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
@@ -28,7 +31,7 @@
         [Required]
         public string OwnerId { get; init; }
         public User Owner { get; init; }
-        public ICollection<Chat> Chats { get; set; } = new List<Chat>();
+        public ICollection<Chat> Chats { get; init; } = new List<Chat>();
         public ICollection<Purchase> Purchases { get; init; } = new List<Purchase>();
     }
 }
