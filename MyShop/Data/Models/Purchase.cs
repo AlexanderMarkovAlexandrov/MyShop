@@ -14,8 +14,5 @@
         [Required]
         public string GoodsId { get; init; }
         public Goods Goods { get; init; }
-        [Required]
-        public string BuyerId { get; init; }
-        public User Buyer { get; init; }
     }
 }

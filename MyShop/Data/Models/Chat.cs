@@ -13,13 +13,6 @@
         [Required]
         public string GoodsId { get; init; }
         public Goods Goods { get; init; }
-        [Required]
-        public string BuyerId { get; init; }
-        public User Buyer { get; init; }
-        [Required]
-        public string OwnerId { get; init; }
-        public User Owner { get; init; }
-
         public ICollection<Comment> Comments { get; init; } = new List<Comment>();
 
     }

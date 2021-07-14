@@ -10,9 +10,6 @@
         [MaxLength(GuidIdMaxLength)]
         public string Id { get; init; } = Guid.NewGuid().ToString();
         [Required]
-        public string OwnerId { get; init; }
-        public User Owner { get; init; }
-        [Required]
         public string  ChatId { get; init; } 
         public Chat Chat { get; init; }
         public DateTime CreatedOn { get; init; } = DateTime.UtcNow;

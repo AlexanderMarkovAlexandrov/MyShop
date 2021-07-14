@@ -28,9 +28,6 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
-        [Required]
-        public string OwnerId { get; init; }
-        public User Owner { get; init; }
         public ICollection<Chat> Chats { get; init; } = new List<Chat>();
         public ICollection<Purchase> Purchases { get; init; } = new List<Purchase>();
     }

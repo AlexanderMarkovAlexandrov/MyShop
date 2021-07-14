@@ -16,7 +16,6 @@
         public DbSet<Comment> Comments { get; init; }
         public DbSet<Purchase> Purchases { get; init; }
         public DbSet<Town> Towns { get; init; }
-        public DbSet<User> Owners { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,34 +25,10 @@
                 .HasForeignKey(c => c.GoodsId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Chat>()
-                .HasOne(c => c.Owner)
-                .WithMany(g => g.ChatsOwner)
-                .HasForeignKey(c => c.OwnerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Chat>()
-                .HasOne(c => c.Buyer)
-                .WithMany(g => g.ChatsBayer)
-                .HasForeignKey(c => c.BuyerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Chat)
                 .WithMany(c => c.Comments)
                 .HasForeignKey(c => c.ChatId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Comment>()
-                .HasOne(c => c.Owner)
-                .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.OwnerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Purchase>()
-                .HasOne(c => c.Buyer)
-                .WithMany(b => b.Purchases)
-                .HasForeignKey(c => c.BuyerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Purchase>()
@@ -72,12 +47,6 @@
                 .HasOne(c => c.Town)
                 .WithMany(c => c.Goods)
                 .HasForeignKey(c => c.TownId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Goods>()
-                .HasOne(c => c.Owner)
-                .WithMany(c => c.Goods)
-                .HasForeignKey(c => c.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);

@@ -242,25 +242,13 @@ namespace MyShop.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("GoodsId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("GoodsId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Chats");
                 });
@@ -283,15 +271,9 @@ namespace MyShop.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Comments");
                 });
@@ -318,10 +300,6 @@ namespace MyShop.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("Pieces")
                         .HasColumnType("int");
 
@@ -340,8 +318,6 @@ namespace MyShop.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("OwnerId");
-
                     b.HasIndex("TownId");
 
                     b.ToTable("Goods");
@@ -353,10 +329,6 @@ namespace MyShop.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("GoodsId")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
@@ -365,8 +337,6 @@ namespace MyShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuyerId");
 
                     b.HasIndex("GoodsId");
 
@@ -388,32 +358,6 @@ namespace MyShop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Towns");
-                });
-
-            modelBuilder.Entity("MyShop.Data.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Owners");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -469,29 +413,13 @@ namespace MyShop.Data.Migrations
 
             modelBuilder.Entity("MyShop.Data.Models.Chat", b =>
                 {
-                    b.HasOne("MyShop.Data.Models.User", "Buyer")
-                        .WithMany("ChatsBayer")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("MyShop.Data.Models.Goods", "Goods")
                         .WithMany("Chats")
                         .HasForeignKey("GoodsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MyShop.Data.Models.User", "Owner")
-                        .WithMany("ChatsOwner")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Buyer");
-
                     b.Navigation("Goods");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("MyShop.Data.Models.Comment", b =>
@@ -502,15 +430,7 @@ namespace MyShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MyShop.Data.Models.User", "Owner")
-                        .WithMany("Comments")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Chat");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("MyShop.Data.Models.Goods", b =>
@@ -518,12 +438,6 @@ namespace MyShop.Data.Migrations
                     b.HasOne("MyShop.Data.Models.Category", "Category")
                         .WithMany("Goods")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("MyShop.Data.Models.User", "Owner")
-                        .WithMany("Goods")
-                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -535,26 +449,16 @@ namespace MyShop.Data.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("Owner");
-
                     b.Navigation("Town");
                 });
 
             modelBuilder.Entity("MyShop.Data.Models.Purchase", b =>
                 {
-                    b.HasOne("MyShop.Data.Models.User", "Buyer")
-                        .WithMany("Purchases")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("MyShop.Data.Models.Goods", "Goods")
                         .WithMany("Purchases")
                         .HasForeignKey("GoodsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Buyer");
 
                     b.Navigation("Goods");
                 });
@@ -579,19 +483,6 @@ namespace MyShop.Data.Migrations
             modelBuilder.Entity("MyShop.Data.Models.Town", b =>
                 {
                     b.Navigation("Goods");
-                });
-
-            modelBuilder.Entity("MyShop.Data.Models.User", b =>
-                {
-                    b.Navigation("ChatsBayer");
-
-                    b.Navigation("ChatsOwner");
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("Goods");
-
-                    b.Navigation("Purchases");
                 });
 #pragma warning restore 612, 618
         }

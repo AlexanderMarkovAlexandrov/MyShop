@@ -21,20 +21,6 @@ namespace MyShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Owners",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Owners", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Towns",
                 columns: table => new
                 {
@@ -59,8 +45,7 @@ namespace MyShop.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,12 +54,6 @@ namespace MyShop.Data.Migrations
                         name: "FK_Goods_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Goods_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -90,9 +69,7 @@ namespace MyShop.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    GoodsId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    BuyerId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    GoodsId = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,18 +80,6 @@ namespace MyShop.Data.Migrations
                         principalTable: "Goods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Chats_Owners_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Chats_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,8 +88,7 @@ namespace MyShop.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Pieces = table.Column<int>(type: "int", nullable: false),
-                    GoodsId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    BuyerId = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    GoodsId = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,12 +99,6 @@ namespace MyShop.Data.Migrations
                         principalTable: "Goods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Purchases_Owners_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,7 +106,6 @@ namespace MyShop.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     ChatId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
@@ -162,18 +119,7 @@ namespace MyShop.Data.Migrations
                         principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Comments_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Chats_BuyerId",
-                table: "Chats",
-                column: "BuyerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chats_GoodsId",
@@ -181,19 +127,9 @@ namespace MyShop.Data.Migrations
                 column: "GoodsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_OwnerId",
-                table: "Chats",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Comments_ChatId",
                 table: "Comments",
                 column: "ChatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_OwnerId",
-                table: "Comments",
-                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Goods_CategoryId",
@@ -201,19 +137,9 @@ namespace MyShop.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Goods_OwnerId",
-                table: "Goods",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Goods_TownId",
                 table: "Goods",
                 column: "TownId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Purchases_BuyerId",
-                table: "Purchases",
-                column: "BuyerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchases_GoodsId",
@@ -237,9 +163,6 @@ namespace MyShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Owners");
 
             migrationBuilder.DropTable(
                 name: "Towns");
