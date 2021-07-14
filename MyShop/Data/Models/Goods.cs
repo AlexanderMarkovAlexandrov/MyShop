@@ -8,13 +8,14 @@
     {
         [Key]
         [Required]
+        [MaxLength(GuidIdMaxLength)]
         public string Id { get; init; } = Guid.NewGuid().ToString();
         [Required]
         [MaxLength(TitleMaxLength)]
         public string Title { get; init; }
         public double Price { get; set; }
         public int Pieces { get; set; }
-        public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         [Required]
         public int CategoryId { get; init; }
         public Category Category { get; init; }

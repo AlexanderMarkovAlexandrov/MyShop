@@ -7,8 +7,9 @@
     {
         [Key]
         [Required]
+        [MaxLength(GuidIdMaxLength)]
         public string Id { get; init; } = Guid.NewGuid().ToString();
-        [Range(1, MaxPieces)]
+        [Range(0,MaxPieces)]
         public int Pieces { get; set; }
         [Required]
         public string GoodsId { get; init; }

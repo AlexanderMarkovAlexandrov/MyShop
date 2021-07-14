@@ -7,6 +7,7 @@
     {
         [Key]
         [Required]
+        [MaxLength(GuidIdMaxLength)]
         public string Id { get; init; } = Guid.NewGuid().ToString();
         [Required]
         public string OwnerId { get; init; }
