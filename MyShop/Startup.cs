@@ -8,6 +8,8 @@ namespace MyShop
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyShop.Data;
+    using MyShop.Infrastructures;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -39,6 +41,7 @@ namespace MyShop
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
