@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MyShop.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MyShop.Controllers
+﻿namespace MyShop.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using MyShop.Models;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
         public IActionResult Index()
