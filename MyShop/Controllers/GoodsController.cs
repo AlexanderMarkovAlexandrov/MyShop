@@ -53,7 +53,18 @@
 
         public IActionResult All()
         {
-            return View();
+            var goods = this.data
+                .Goods
+                .ToList()
+                .OrderBy(g => g.CreatedOn)
+                .Select(g => new GoodsListeningViewModel
+                {
+                    Id = g.Id,
+                    ImageUrl = g.ImageUrl,
+                    Title = g.Title
+                }).ToList();
+
+            return View(goods);
         }
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data

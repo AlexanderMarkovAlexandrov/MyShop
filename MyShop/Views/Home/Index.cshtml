@@ -1,8 +1,20 @@
-﻿@{
+﻿@model IEnumerable<GoodsListeningViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="/Goods/All"></a>All Categories</p>
+<h3 class="text-center">New Arival</h3>
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        @foreach (var goods in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
+                <div class="card-body">
+                    <h5 class="card-title">@goods.Title</h5>
+                    <a asp-controller="Goods" asp-action="Ditails" asp-route-id="@goods.Id" class="btn btn-primary"></a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
+
