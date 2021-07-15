@@ -5,7 +5,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using MyShop.Data;
     using MyShop.Data.Models;
-    using System;
     using System.Linq;
 
     public static class ApplicationBuilderExtensions

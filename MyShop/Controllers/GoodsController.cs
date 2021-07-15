@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Data;
+    using MyShop.Data.Models;
     using MyShop.Models.Goods;
     using System.Collections.Generic;
     using System.Linq;
@@ -19,8 +20,35 @@
         [HttpPost]
         public IActionResult Add(AddGoodsFormModel goods)
         {
+            if (!this.data.Categories.Any(g=> g.Id == goods.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(goods.CategoryId), "The Category does not exist.");
+            }
+            if (!this.data.Towns.Any(t=> t.Id == goods.TownId))
+            {
+                this.ModelState.AddModelError(nameof(goods.TownId), "The Town does not exist.");
+            }
+            if (!ModelState.IsValid)
+            {
+                goods.Categories = this.GetCategories();
+                goods.Towns = this.GetTowns();
+                return View(goods);
+            }
 
-            return Redirect("Goods/All");
+            var goodsData = new Goods
+            {
+                Title = goods.Title,
+                Price = goods.Price,
+                Pieces = goods.Pieces,
+                ImageUrl = goods.ImageUrl,
+                Description = goods.Description,
+                CategoryId = goods.CategoryId,
+                TownId = goods.TownId
+            };
+            this.data.Goods.Add(goodsData);
+            this.data.SaveChanges();
+
+            return RedirectToAction("All","Goods");
         }
 
         public IActionResult All()
@@ -34,17 +62,19 @@
                 { 
                     Id = c.Id,
                     Name=c.Name
-                }).ToList();
+                })
+                .OrderBy(c=>c.Name)
+                .ToList();
 
         private IEnumerable<GoodsTownViewModel> GetTowns()
             => this.data
-                   .Towns
-                   .Select(t => new GoodsTownViewModel
-                   {
-                       Id = t.Id,
-                       Name = t.Name
-                   }).ToList();
-                
-      
+                .Towns
+                .Select(t => new GoodsTownViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                })
+                .OrderBy(t => t.Name)
+                .ToList();
     }
 }

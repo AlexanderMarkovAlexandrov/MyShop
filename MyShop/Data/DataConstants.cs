@@ -10,13 +10,16 @@
 
         public const int TownMaxLength = 50;
 
-        public const int MaxPieces = 100;
         public const int ImageUrlMaxLength = 200;
         public const int TitleMaxLength = 100;
+        public const int TitleMinLength = 5;
         public const int DescriptionMaxLength = 2000;
+        public const int DescriptionMinLength = 10;
 
-        public const int UserNameMaxLength = 40;
-        public const int EmailMaxLength = 50;
-        public const int PasswordMaxLength = 100;
+        public const int PriceMaxValue = 1000*1000;
+        public const int PriceMinValue = 0;
+
+        public const int PiecesMaxValue = 100;
+        public const int PiecesMinValue = 0;
     }
 }
