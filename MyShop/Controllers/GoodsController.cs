@@ -11,6 +11,7 @@
     {
         private readonly MyShopDbContext data;
         public GoodsController(MyShopDbContext data) => this.data = data;
+
         public IActionResult Add() => View(new AddGoodsFormModel
         {
             Categories = this.GetCategories(),
@@ -34,7 +35,6 @@
                 goods.Towns = this.GetTowns();
                 return View(goods);
             }
-
             var goodsData = new Goods
             {
                 Title = goods.Title,
@@ -51,10 +51,11 @@
             return RedirectToAction("All","Goods");
         }
 
-        public IActionResult All()
+        public IActionResult All(int Id)
         {
             var goods = this.data
                 .Goods
+                .Where(g=>g.CategoryId == Id)
                 .ToList()
                 .OrderByDescending(g => g.CreatedOn)
                 .Select(g => new GoodsListeningViewModel
@@ -66,6 +67,7 @@
 
             return View(goods);
         }
+
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data
                 .Categories
