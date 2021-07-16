@@ -16,7 +16,7 @@
             var goods = this.data
                 .Goods
                 .ToList()
-                .OrderBy(g => g.CreatedOn)
+                .OrderByDescending(g => g.CreatedOn)
                 .Take(10)
                 .Select(g => new GoodsListeningViewModel
                 {

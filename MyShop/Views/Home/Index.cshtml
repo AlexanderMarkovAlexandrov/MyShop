@@ -4,17 +4,17 @@
 }
 <h3 class="text-center">New Arival</h3>
 <div class="row">
+    @foreach (var goods in Model)
+    {
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-        @foreach (var goods in Model)
-        {
-            <div class="card" style="width: 18rem;">
-                <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
-                <div class="card-body">
-                    <h5 class="card-title">@goods.Title</h5>
-                    <a asp-controller="Goods" asp-action="Ditails" asp-route-id="@goods.Id" class="btn btn-primary"></a>
-                </div>
+        <div class="card">
+            <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
+            <div class="card-body">
+                <h5 class="card-title text-center">@goods.Title</h5>
+                <a asp-controller="Goods" asp-action="Ditails" asp-route-id="@goods.Id" class="btn btn-primary text-center">View More</a>
             </div>
-        }
+        </div>
     </div>
+    }
 </div>
 
