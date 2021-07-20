@@ -10,6 +10,7 @@
         public string Name { get; set; }
         [Required]
         [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
+        [RegularExpression(@"^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$")]
         public string PhoneNumber { get; set; }
     }
 }
