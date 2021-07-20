@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MyShop.Data.Migrations
+﻿namespace MyShop.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
     public partial class DBTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

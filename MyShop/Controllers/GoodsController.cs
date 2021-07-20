@@ -1,26 +1,46 @@
 ﻿namespace MyShop.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Data;
     using MyShop.Data.Models;
+    using MyShop.Infrastructures;
     using MyShop.Models.Goods;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
 
     public class GoodsController : Controller
     {
         private readonly MyShopDbContext data;
         public GoodsController(MyShopDbContext data) => this.data = data;
 
-        public IActionResult Add() => View(new AddGoodsFormModel
+        [Authorize]
+        public IActionResult Add() 
         {
-            Categories = this.GetCategories(),
-            Towns = this.GetTowns()
-        });
-        
+            var userId = this.User.GetId();
+            var isMerchant = this.data.Merchants.Any(c => c.UserId == userId);
+            if (!isMerchant)
+            {
+                return BadRequest();
+            }
+            return View(new AddGoodsFormModel
+               {
+                   Categories = this.GetCategories(),
+                   Towns = this.GetTowns()
+               });
+        }
+
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddGoodsFormModel goods)
         {
+            var userId = this.User.GetId();
+            var isMerchant = this.data.Merchants.Any(c => c.UserId == userId);
+            if (!isMerchant)
+            {
+                return BadRequest();
+            }
             if (!this.data.Categories.Any(g=> g.Id == goods.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(goods.CategoryId), "The Category does not exist.");
@@ -48,7 +68,7 @@
             this.data.Goods.Add(goodsData);
             this.data.SaveChanges();
 
-            return RedirectToAction("All","Goods");
+            return RedirectToAction("Index","Home");
         }
 
         public IActionResult All(int Id)

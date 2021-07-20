@@ -13,6 +13,7 @@
         public string  ChatId { get; init; } 
         public Chat Chat { get; init; }
         public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
+        public bool IsRead { get; set; }
         [Required]
         [MaxLength(ContentMaxLength)]
         public string Content { get; init; }

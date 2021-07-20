@@ -21,5 +21,10 @@
 
         public const int PiecesMaxValue = 100;
         public const int PiecesMinValue = 0;
+
+        public const int NameMaxLength = 50;
+        public const int NameMinLength = 3;
+        public const int PhoneNumberMaxLength = 20;
+        public const int PhoneNumberMinLength = 6;
     }
 }

@@ -13,7 +13,7 @@
         [Url]
         public string ImageUrl { get; init; }
         [Range(PriceMinValue,PriceMaxValue)]
-        public double Price { get; init; }
+        public decimal Price { get; init; }
         [Range(PiecesMinValue, PiecesMaxValue)]
         public int Pieces { get; init; }
         [Display(Name = "Category")]

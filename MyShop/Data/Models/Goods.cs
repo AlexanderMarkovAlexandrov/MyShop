@@ -16,7 +16,7 @@
         [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public int Pieces { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         [Required]
@@ -28,6 +28,9 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
+        public int MerchantId { get; init; }
+        public Merchant Merchant { get; init; }
+
         public ICollection<Chat> Chats { get; init; } = new List<Chat>();
         public ICollection<Purchase> Purchases { get; init; } = new List<Purchase>();
     }
