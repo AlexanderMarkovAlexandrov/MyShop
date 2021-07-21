@@ -5,7 +5,7 @@ namespace MyShop.Models.Goods
     public class GoodsDetailsViewModelClass
     {
         public string Id { get; init; } 
-        public string Title { get; init; }
+        public string Title { get; set; }
         public string ImageUrl { get; set; }
         [Display(Name = "Price:")]
         public decimal Price { get; set; }

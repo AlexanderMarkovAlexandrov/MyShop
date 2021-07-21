@@ -94,6 +94,10 @@
                 .Goods
                 .Where(g => g.Id == id)
                 .FirstOrDefault();
+            if (goods == null)
+            {
+                return BadRequest();
+            }
             var goodsData = new GoodsDetailsViewModelClass
             {
                 Id = goods.Id,
@@ -105,10 +109,42 @@
             };
             return View(goodsData);
         }
-        public IActionResult Buy(string id)
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(GoodsDetailsViewModelClass goods)
         {
-            
-            return View();
+            var goodsData = this.data
+                .Goods
+                .Where(g => g.Id == goods.Id)
+                .FirstOrDefault();
+            if (goods == null)
+            {
+                return BadRequest();
+            }
+            goods.Title = goodsData.Title;
+            goods.Price = goodsData.Price;
+            goods.ImageUrl = goodsData.ImageUrl;
+            goods.Description = goodsData.Description;
+            if (goods.Pieces == 0)
+            {
+                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces not must be zero.");
+                return View(goods);
+            }
+            if (goods.Pieces> goodsData.Pieces)
+            {
+                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces are more than the available.Write to Merchant.");
+                return View(goods);
+            }
+            var purchase = new Purchase
+            {
+                GoodsId = goodsData.Id,
+                Pieces = goods.Pieces
+            };
+            goodsData.Pieces -= goods.Pieces;
+            this.data.Purchases.Add(purchase);
+            this.data.SaveChanges();
+
+            return View(goods);
         }
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data

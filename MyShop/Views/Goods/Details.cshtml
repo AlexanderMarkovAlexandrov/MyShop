@@ -19,12 +19,13 @@
                 <span><input asp-for="Pieces" type="number" class="form-control" step="any" placeholder="@Model.Pieces"></span>
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <span>
-                    <a asp-controller="Goods" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-primary text-center">BUY NOW</a>
+                    <input class="btn btn-primary float-right" type="submit" value="BUY NOW" />
                 </span>
-                <span>
-                    <a asp-controller="Chat" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary text-center">WRITE TO MERCHANT</a>
-                </span>
+
             </form>
+            <span>
+                <a asp-controller="Chat" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary text-center">WRITE TO MERCHANT</a>
+            </span>
         </div>
     </div>
 </div>
