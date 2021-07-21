@@ -13,10 +13,10 @@
         private readonly MyShopDbContext data;
         public MerchantController(MyShopDbContext data) => this.data = data;
         [Authorize]
+
         public IActionResult Create()
-        {
-            return View();
-        }
+            => View();
+      
         [HttpPost]
         [Authorize]
         public IActionResult Create(CreateMerchantFormModel merchant)

@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<GoodsListeningViewModel>
 @{
-    ViewData["Title"] = "All Goods";
+    ViewBag.Title = "All Goods";
 }
 <div class="row">
-
     @foreach (var goods in Model)
     {
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
             <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
             <div class="card-body">
                 <h5 class="card-title">@goods.Title</h5>

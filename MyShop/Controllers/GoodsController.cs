@@ -8,7 +8,6 @@
     using MyShop.Models.Goods;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
 
     public class GoodsController : Controller
     {
@@ -36,8 +35,8 @@
         public IActionResult Add(AddGoodsFormModel goods)
         {
             var userId = this.User.GetId();
-            var isMerchant = this.data.Merchants.Any(c => c.UserId == userId);
-            if (!isMerchant)
+            var merchant = this.data.Merchants.FirstOrDefault(c => c.UserId == userId);
+            if (merchant == null)
             {
                 return BadRequest();
             }
@@ -63,7 +62,8 @@
                 ImageUrl = goods.ImageUrl,
                 Description = goods.Description,
                 CategoryId = goods.CategoryId,
-                TownId = goods.TownId
+                TownId = goods.TownId,
+                MerchantId = merchant.Id
             };
             this.data.Goods.Add(goodsData);
             this.data.SaveChanges();
@@ -88,6 +88,28 @@
             return View(goods);
         }
 
+        public IActionResult Details(string id)
+        {
+            var goods = this.data
+                .Goods
+                .Where(g => g.Id == id)
+                .FirstOrDefault();
+            var goodsData = new GoodsDetailsViewModelClass
+            {
+                Id = goods.Id,
+                Title = goods.Title,
+                ImageUrl = goods.ImageUrl,
+                Description = goods.Description,
+                Pieces = 0,
+                Price = goods.Price
+            };
+            return View(goodsData);
+        }
+        public IActionResult Buy(string id)
+        {
+            
+            return View();
+        }
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data
                 .Categories
