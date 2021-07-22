@@ -1,1 +1,23 @@
-﻿Chat Index
+﻿@model ChatViewModel
+@{
+    ViewBag.Title = "Chat with Werchant";
+}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        <div class="card">
+            <h5 class="card-title">@Model.Goods.Title</h5>
+            <img src="@Model.Goods.ImageUrl" class="card-img-top" alt="@Model.Goods.Title">
+        </div>
+    </div>
+    <div>
+        @if (!Model.Comments.Any())
+        {
+            <h5>NO MESSAGES!</h5>
+        }
+        else
+        {
+            <h5>MESSAGES</h5>
+        }
+    </div>
+
+</div>

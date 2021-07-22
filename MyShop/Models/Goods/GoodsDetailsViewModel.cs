@@ -2,7 +2,7 @@
 
 namespace MyShop.Models.Goods
 {
-    public class GoodsDetailsViewModelClass
+    public class GoodsDetailsViewModel
     {
         public string Id { get; init; } 
         public string Title { get; set; }

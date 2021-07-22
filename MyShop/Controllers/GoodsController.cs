@@ -98,7 +98,7 @@
             {
                 return BadRequest();
             }
-            var goodsData = new GoodsDetailsViewModelClass
+            var goodsData = new GoodsDetailsViewModel
             {
                 Id = goods.Id,
                 Title = goods.Title,
@@ -111,7 +111,7 @@
         }
         [HttpPost]
         [Authorize]
-        public IActionResult Details(GoodsDetailsViewModelClass goods)
+        public IActionResult Details(GoodsDetailsViewModel goods)
         {
             var goodsData = this.data
                 .Goods
