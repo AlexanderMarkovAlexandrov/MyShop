@@ -9,14 +9,14 @@
     <div class="row">
         @foreach (var category in Model.Categories)
         {
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title text-center">@category.Name</h5>
-                        <a asp-controller="Goods" asp-action="All" asp-route-id="@category.Id" class="btn btn-primary">View Goods</a>
-                    </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="card mb-2">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@category.Name</h5>
+                    <a asp-controller="Goods" asp-action="All" asp-route-id="@category.Id" class="btn btn-primary">View Goods</a>
                 </div>
             </div>
+        </div>
         }
     </div>
     <div class="mb-3"></div>

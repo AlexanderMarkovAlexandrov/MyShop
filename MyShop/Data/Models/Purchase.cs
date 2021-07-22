@@ -12,6 +12,8 @@
         [Range(PiecesMinValue,PiecesMaxValue)]
         public int Pieces { get; set; }
         [Required]
+        public string BuyerId { get; init; }
+        [Required]
         public string GoodsId { get; init; }
         public Goods Goods { get; init; }
     }

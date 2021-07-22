@@ -1,18 +1,38 @@
-﻿@model IEnumerable<GoodsListeningViewModel>
+﻿@model AllGoodsViewModel
 @{
     ViewBag.Title = "All Goods";
 }
-<div class="row">
-    @foreach (var goods in Model)
-    {
-    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-        <div class="card">
-            <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
-            <div class="card-body">
-                <h5 class="card-title">@goods.Title</h5>
-                <a asp-controller="Goods" asp-action="Ditails" asp-route-id="@goods.Id" class="btn btn-primary text-center">View More</a>
-            </div>
-        </div>
+
+
+<div class="mb-3"></div>
+<form class="form-inline text-center" method="get">
+    <div class="form-group">
+        <label asp-for="Search"></label>
+        <input asp-for="Search" type="text" class="form-control" placeholder="text...">
+        <input class="btn btn-primary" type="submit" value="Search" />
     </div>
-    }
-</div>
+</form>
+<h2 class="text-center ">@ViewBag.Title from Category @Model.Category</h2>
+@if (!Model.Goods.Any())
+{
+    <div class="mb-3"></div>
+    <h3 class="text-center">No Goods in this Category!</h3>
+}
+else
+{
+    <div class="row">
+        @foreach (var goods in Model.Goods)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="card">
+                    <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center">@goods.Title</h5>
+                        <a asp-controller="Goods" asp-action="Details" asp-route-id="@goods.Id" class="btn btn-primary">View More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+

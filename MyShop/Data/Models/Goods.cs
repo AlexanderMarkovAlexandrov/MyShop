@@ -30,8 +30,6 @@
         public string Description { get; set; }
         public int MerchantId { get; init; }
         public Merchant Merchant { get; init; }
-
-        public ICollection<Chat> Chats { get; init; } = new List<Chat>();
         public ICollection<Purchase> Purchases { get; init; } = new List<Purchase>();
     }
 }

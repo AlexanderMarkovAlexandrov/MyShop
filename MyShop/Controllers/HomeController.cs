@@ -18,7 +18,7 @@
             var goods = this.data.Goods
                 .ToList()
                 .OrderByDescending(g => g.CreatedOn)
-                .Take(10)
+                .Take(4)
                 .Select(g => new GoodsListeningViewModel
                 {
                     Id = g.Id,

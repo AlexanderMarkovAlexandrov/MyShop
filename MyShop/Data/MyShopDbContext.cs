@@ -13,8 +13,6 @@
         }
         public DbSet<Goods> Goods { get; init; }
         public DbSet<Category> Categories { get; init; }
-        public DbSet<Chat> Chats { get; init; }
-        public DbSet<Comment> Comments { get; init; }
         public DbSet<Purchase> Purchases { get; init; }
         public DbSet<Town> Towns { get; init; }
         public DbSet<Merchant> Merchants { get; init; }
@@ -26,18 +24,6 @@
               .WithOne()
               .HasForeignKey<Merchant>(c => c.UserId)
               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Chat>()
-                .HasOne(c => c.Goods)
-                .WithMany(g => g.Chats)
-                .HasForeignKey(c => c.GoodsId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Comment>()
-                .HasOne(c => c.Chat)
-                .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.ChatId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Purchase>()
                 .HasOne(c => c.Goods)

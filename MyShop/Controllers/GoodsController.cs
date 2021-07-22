@@ -71,12 +71,20 @@
             return RedirectToAction("Index","Home");
         }
 
-        public IActionResult All(int Id)
+        public IActionResult All(int id , [FromQuery]AllGoodsViewModel query)
         {
-            var goods = this.data
-                .Goods
-                .Where(g=>g.CategoryId == Id)
-                .ToList()
+            var goodsQuery = this.data.Goods.AsQueryable();
+         
+            if (!this.data.Categories.Any(c=>c.Id == id))
+            {
+                return BadRequest();
+            }
+            goodsQuery = goodsQuery.Where(c => c.CategoryId == id);
+            if (query.Search != null)
+            {
+                goodsQuery = goodsQuery.Where(c => c.Title.Contains(query.Search));
+            }
+            var goods = goodsQuery
                 .OrderByDescending(g => g.CreatedOn)
                 .Select(g => new GoodsListeningViewModel
                 {
@@ -84,8 +92,10 @@
                     ImageUrl = g.ImageUrl,
                     Title = g.Title
                 }).ToList();
-
-            return View(goods);
+            query.Search = null;
+            query.Goods = goods;
+            query.Category = this.data.Categories.First(c => c.Id == id).Name;
+            return View(query);
         }
 
         public IActionResult Details(string id)
@@ -138,13 +148,14 @@
             var purchase = new Purchase
             {
                 GoodsId = goodsData.Id,
-                Pieces = goods.Pieces
+                Pieces = goods.Pieces,
+                BuyerId = this.User.GetId()
             };
             goodsData.Pieces -= goods.Pieces;
             this.data.Purchases.Add(purchase);
             this.data.SaveChanges();
 
-            return View(goods);
+            return RedirectToAction("Index", "Home");
         }
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data

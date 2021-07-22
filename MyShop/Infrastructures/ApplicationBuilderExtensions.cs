@@ -30,10 +30,9 @@
                 new Category{ Name = "Electronics"},
                 new Category{ Name = "Home"},
                 new Category{ Name = "Sport"},
-                new Category{ Name = "Rent"},
                 new Category{ Name = "Fashion"},
                 new Category{ Name = "Autos"},                
-                new Category{ Name = "Services"},
+                new Category{ Name = "Children"},
                 new Category{ Name = "Garden"},
                 new Category{ Name = "Animals"}
             });
