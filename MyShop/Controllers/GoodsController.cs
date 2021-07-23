@@ -15,7 +15,7 @@
         public GoodsController(MyShopDbContext data) => this.data = data;
 
         [Authorize]
-        public IActionResult Add() 
+        public IActionResult Add()
         {
             var userId = this.User.GetId();
             var isMerchant = this.data.Merchants.Any(c => c.UserId == userId);
@@ -24,10 +24,10 @@
                 return BadRequest();
             }
             return View(new AddGoodsFormModel
-               {
-                   Categories = this.GetCategories(),
-                   Towns = this.GetTowns()
-               });
+            {
+                Categories = this.GetCategories(),
+                Towns = this.GetTowns()
+            });
         }
 
         [HttpPost]
@@ -40,11 +40,11 @@
             {
                 return BadRequest();
             }
-            if (!this.data.Categories.Any(g=> g.Id == goods.CategoryId))
+            if (!this.data.Categories.Any(g => g.Id == goods.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(goods.CategoryId), "The Category does not exist.");
             }
-            if (!this.data.Towns.Any(t=> t.Id == goods.TownId))
+            if (!this.data.Towns.Any(t => t.Id == goods.TownId))
             {
                 this.ModelState.AddModelError(nameof(goods.TownId), "The Town does not exist.");
             }
@@ -68,22 +68,37 @@
             this.data.Goods.Add(goodsData);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult All(int id , [FromQuery]AllGoodsViewModel query)
+        public IActionResult All(int id, [FromQuery] AllGoodsViewModel query)
         {
             var goodsQuery = this.data.Goods.AsQueryable();
-         
-            if (!this.data.Categories.Any(c=>c.Id == id))
+            bool filter = false;
+            if (!this.data.Categories.Any(c => c.Id == id))
             {
                 return BadRequest();
             }
-            goodsQuery = goodsQuery.Where(c => c.CategoryId == id);
+            if (this.data.Towns.Any(c => c.Id == query.TownId))
+            {
+                goodsQuery = goodsQuery.Where(c => c.TownId == query.TownId);
+                filter = true;
+            }
+            if (this.data.Categories.Any(c=>c.Id == query.CategoryId))
+            {
+                goodsQuery = goodsQuery.Where(c => c.CategoryId == query.CategoryId);
+                filter = true;
+            }
             if (query.Search != null)
             {
                 goodsQuery = goodsQuery.Where(c => c.Title.Contains(query.Search));
+                filter = true;
             }
+            if (!filter)
+            {
+                goodsQuery = goodsQuery.Where(c => c.CategoryId == id);
+            }
+                           
             var goods = goodsQuery
                 .OrderByDescending(g => g.CreatedOn)
                 .Select(g => new GoodsListeningViewModel
@@ -92,9 +107,11 @@
                     ImageUrl = g.ImageUrl,
                     Title = g.Title
                 }).ToList();
+
+            query.Towns = this.GetTowns();
+            query.Categories = this.GetCategories();
             query.Search = null;
             query.Goods = goods;
-            query.Category = this.data.Categories.First(c => c.Id == id).Name;
             return View(query);
         }
 
