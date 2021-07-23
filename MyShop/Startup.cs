@@ -9,6 +9,7 @@ namespace MyShop
     using Microsoft.Extensions.Hosting;
     using MyShop.Data;
     using MyShop.Infrastructures;
+    using MyShop.Services.Goods;
 
     public class Startup
     {
@@ -36,6 +37,8 @@ namespace MyShop
                 .AddEntityFrameworkStores<MyShopDbContext>();
 
             services.AddControllersWithViews();
+
+            services.AddTransient<IGoodsService, GoodsService>();
         }
 
 

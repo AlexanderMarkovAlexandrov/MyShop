@@ -71,46 +71,36 @@
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult All(int id, [FromQuery] AllGoodsViewModel query)
+        public IActionResult All([FromQuery] AllGoodsViewModel query)
         {
             var goodsQuery = this.data.Goods.AsQueryable();
-            bool filter = false;
-            if (!this.data.Categories.Any(c => c.Id == id))
-            {
-                return BadRequest();
-            }
+            
             if (this.data.Towns.Any(c => c.Id == query.TownId))
             {
                 goodsQuery = goodsQuery.Where(c => c.TownId == query.TownId);
-                filter = true;
             }
             if (this.data.Categories.Any(c=>c.Id == query.CategoryId))
             {
                 goodsQuery = goodsQuery.Where(c => c.CategoryId == query.CategoryId);
-                filter = true;
             }
             if (query.Search != null)
             {
                 goodsQuery = goodsQuery.Where(c => c.Title.Contains(query.Search));
-                filter = true;
             }
-            if (!filter)
-            {
-                goodsQuery = goodsQuery.Where(c => c.CategoryId == id);
-            }
-                           
+            
             var goods = goodsQuery
                 .OrderByDescending(g => g.CreatedOn)
+                .Skip((query.CurrentPage - 1)* query.GoodsPerPage)
+                .Take(query.GoodsPerPage)
                 .Select(g => new GoodsListeningViewModel
                 {
                     Id = g.Id,
                     ImageUrl = g.ImageUrl,
                     Title = g.Title
                 }).ToList();
-
+            query.TotalGoods = goodsQuery.Count();
             query.Towns = this.GetTowns();
             query.Categories = this.GetCategories();
-            query.Search = null;
             query.Goods = goods;
             return View(query);
         }
@@ -157,7 +147,7 @@
                 this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces not must be zero.");
                 return View(goods);
             }
-            if (goods.Pieces> goodsData.Pieces)
+            if (goods.Pieces > goodsData.Pieces)
             {
                 this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces are more than the available.Write to Merchant.");
                 return View(goods);
@@ -174,6 +164,7 @@
 
             return RedirectToAction("Index", "Home");
         }
+     
         private IEnumerable<GoodsCategoryViewModel> GetCategories()
             => this.data
                 .Categories
