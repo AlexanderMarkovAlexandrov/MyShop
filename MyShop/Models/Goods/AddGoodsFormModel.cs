@@ -1,5 +1,6 @@
 ﻿namespace MyShop.Models.Goods
 {
+    using MyShop.Services.Goods.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants;
@@ -23,7 +24,7 @@
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
-        public IEnumerable<GoodsCategoryViewModel> Categories { get; set; }
-        public IEnumerable<GoodsTownViewModel> Towns { get; set; }
+        public IEnumerable<CategoryCerviceModel> Categories { get; set; }
+        public IEnumerable<TownServiceModel> Towns { get; set; }
     }
 }

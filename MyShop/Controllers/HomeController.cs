@@ -1,12 +1,11 @@
 ﻿namespace MyShop.Controllers
 {
+    using System.Diagnostics;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Data;
     using MyShop.Models;
-    using MyShop.Models.Goods;
-    using MyShop.Models.Home;
-    using System.Diagnostics;
-    using System.Linq;
+    using MyShop.Services.Goods.Models;
 
     public class HomeController : Controller
     {
@@ -15,21 +14,18 @@
             => this.data = data;
         public IActionResult Index()
         {
-            var goodsData = this.data.Goods
+            var goods = this.data.Goods
                 .ToList()
                 .OrderByDescending(g => g.CreatedOn)
                 .Take(4)
-                .Select(g => new GoodsListeningViewModel
+                .Select(g => new CoodsServiceModel
                 {
                     Id = g.Id,
                     ImageUrl = g.ImageUrl,
                     Title = g.Title
                 }).ToList();
 
-            var goods = new IndexListeningViewModel
-            {
-                Goods= goodsData
-            };
+          
             return View(goods);
         }
 

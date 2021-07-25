@@ -6,13 +6,19 @@
     using MyShop.Data.Models;
     using MyShop.Infrastructures;
     using MyShop.Models.Goods;
-    using System.Collections.Generic;
+    using MyShop.Services.Goods;
     using System.Linq;
 
     public class GoodsController : Controller
     {
+        private readonly IGoodsService goods;
         private readonly MyShopDbContext data;
-        public GoodsController(MyShopDbContext data) => this.data = data;
+        public GoodsController(MyShopDbContext data, IGoodsService goods)
+        {
+            this.goods = goods;
+            this.data = data;
+        }
+           
 
         [Authorize]
         public IActionResult Add()
@@ -25,8 +31,8 @@
             }
             return View(new AddGoodsFormModel
             {
-                Categories = this.GetCategories(),
-                Towns = this.GetTowns()
+                Categories = this.goods.GetCategories(),
+                Towns = this.goods.GetTowns()
             });
         }
 
@@ -50,8 +56,8 @@
             }
             if (!ModelState.IsValid)
             {
-                goods.Categories = this.GetCategories();
-                goods.Towns = this.GetTowns();
+                goods.Categories = this.goods.GetCategories();
+                goods.Towns = this.goods.GetTowns();
                 return View(goods);
             }
             var goodsData = new Goods
@@ -73,35 +79,18 @@
 
         public IActionResult All([FromQuery] AllGoodsViewModel query)
         {
-            var goodsQuery = this.data.Goods.AsQueryable();
-            
-            if (this.data.Towns.Any(c => c.Id == query.TownId))
-            {
-                goodsQuery = goodsQuery.Where(c => c.TownId == query.TownId);
-            }
-            if (this.data.Categories.Any(c=>c.Id == query.CategoryId))
-            {
-                goodsQuery = goodsQuery.Where(c => c.CategoryId == query.CategoryId);
-            }
-            if (query.Search != null)
-            {
-                goodsQuery = goodsQuery.Where(c => c.Title.Contains(query.Search));
-            }
-            
-            var goods = goodsQuery
-                .OrderByDescending(g => g.CreatedOn)
-                .Skip((query.CurrentPage - 1)* query.GoodsPerPage)
-                .Take(query.GoodsPerPage)
-                .Select(g => new GoodsListeningViewModel
-                {
-                    Id = g.Id,
-                    ImageUrl = g.ImageUrl,
-                    Title = g.Title
-                }).ToList();
-            query.TotalGoods = goodsQuery.Count();
-            query.Towns = this.GetTowns();
-            query.Categories = this.GetCategories();
-            query.Goods = goods;
+            var goodsQuery = this.goods.All(
+            query.TownId ,
+            query.CategoryId,
+            query.Search,
+            query.GoodsPerPage,
+            query.CurrentPage
+                );
+           
+            query.Goods = goodsQuery.Goods;
+            query.TotalGoods = goodsQuery.TotalGoods;
+            query.Towns = this.goods.GetTowns();
+            query.Categories = this.goods.GetCategories();
             return View(query);
         }
 
@@ -149,7 +138,7 @@
             }
             if (goods.Pieces > goodsData.Pieces)
             {
-                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces are more than the available.Write to Merchant.");
+                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces are more than the available.");
                 return View(goods);
             }
             var purchase = new Purchase
@@ -164,27 +153,5 @@
 
             return RedirectToAction("Index", "Home");
         }
-     
-        private IEnumerable<GoodsCategoryViewModel> GetCategories()
-            => this.data
-                .Categories
-                .Select(c => new GoodsCategoryViewModel 
-                { 
-                    Id = c.Id,
-                    Name=c.Name
-                })
-                .OrderBy(c=>c.Name)
-                .ToList();
-
-        private IEnumerable<GoodsTownViewModel> GetTowns()
-            => this.data
-                .Towns
-                .Select(t => new GoodsTownViewModel
-                {
-                    Id = t.Id,
-                    Name = t.Name
-                })
-                .OrderBy(t => t.Name)
-                .ToList();
     }
 }

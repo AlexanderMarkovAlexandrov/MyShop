@@ -1,4 +1,4 @@
-﻿@model IndexListeningViewModel
+﻿@model IEnumerable<CoodsServiceModel>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -8,7 +8,7 @@
     </div>
     <h3 class="text-center mb-4">New Arival</h3>
     <div class="row">
-        @foreach (var goods in Model.Goods)
+        @foreach (var goods in Model)
         {
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <div class="card">
