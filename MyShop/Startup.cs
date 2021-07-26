@@ -10,6 +10,7 @@ namespace MyShop
     using MyShop.Data;
     using MyShop.Infrastructures;
     using MyShop.Services.Goods;
+    using MyShop.Services.Merchant;
 
     public class Startup
     {
@@ -39,6 +40,7 @@ namespace MyShop
             services.AddControllersWithViews();
 
             services.AddTransient<IGoodsService, GoodsService>();
+            services.AddTransient<IMerchantService, MerchantService>();
         }
 
 
