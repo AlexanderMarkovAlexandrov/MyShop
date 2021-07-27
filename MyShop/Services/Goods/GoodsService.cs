@@ -38,25 +38,49 @@
                 .OrderByDescending(g => g.CreatedOn)
                 .Skip((currentPage - 1) * goodsPerPage)
                 .Take(goodsPerPage)
-                .Select(g => new CoodsServiceModel
+                .Select(g => new GoodsServiceModel
                 {
                     Id = g.Id,
                     ImageUrl = g.ImageUrl,
-                    Title = g.Title
+                    Title = g.Title,
+                    Price = g.Price
                 }).ToList();
 
             return new GoodsQueryServiceModel
             {
                 TotalGoods = goodsQuery.Count(),
-                CurrentPage = currentPage,
-                GoodsPerPage = goodsPerPage,
-                Search = search,
                 Goods = goods
             };
         }
-        public IEnumerable<TownServiceModel> GetTowns()
-        {
-           return this.data
+
+        public GoodsDetailsServiceModel Details(string id)
+            => this.data
+                .Goods
+                .Where(g => g.Id == id)
+                .Select(g => new GoodsDetailsServiceModel
+                {
+                    Id = g.Id,
+                    Title = g.Title,
+                    ImageUrl = g.ImageUrl,
+                    Description = g.Description,
+                    Pieces = 0,
+                    Price = g.Price,
+                    MerchantId = g.MerchantId
+                }).FirstOrDefault();
+
+        public bool IsGoods(string id)
+            => this.data
+                .Goods
+                .Any(g => g.Id == id);
+
+        public int GoodsPieces(string id)
+            => this.data
+                .Goods
+                .Where(g => g.Id == id)
+                .Select(g => g.Pieces)
+                .FirstOrDefault();
+         public IEnumerable<TownServiceModel> GetTowns()
+            => this.data
                 .Towns
                 .Select(t => new TownServiceModel
                 {
@@ -65,11 +89,11 @@
                 })
                 .OrderBy(t => t.Name)
                 .ToList();
-        }
-        public IEnumerable<CategoryCerviceModel> GetCategories()
+
+        public IEnumerable<CategoryServiceModel> GetCategories()
             => this.data
                 .Categories
-                .Select(c => new CategoryCerviceModel
+                .Select(c => new CategoryServiceModel
                 {
                     Id = c.Id,
                     Name = c.Name

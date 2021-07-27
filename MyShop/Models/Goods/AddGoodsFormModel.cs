@@ -24,7 +24,7 @@
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
-        public IEnumerable<CategoryCerviceModel> Categories { get; set; }
+        public IEnumerable<CategoryServiceModel> Categories { get; set; }
         public IEnumerable<TownServiceModel> Towns { get; set; }
     }
 }

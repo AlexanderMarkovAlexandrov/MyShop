@@ -11,7 +11,10 @@ namespace MyShop.Services.Goods
             string search,
             int goodsPerPage,
             int currentPage);
+        bool IsGoods(string id);
+        int GoodsPieces(string id);
+        GoodsDetailsServiceModel Details(string id);
         IEnumerable<TownServiceModel> GetTowns();
-        IEnumerable<CategoryCerviceModel> GetCategories();
+        IEnumerable<CategoryServiceModel> GetCategories();
     }
 }

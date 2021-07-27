@@ -3,6 +3,7 @@ namespace MyShop
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ namespace MyShop
     using MyShop.Infrastructures;
     using MyShop.Services.Goods;
     using MyShop.Services.Merchant;
+    using MyShop.Services.Purchase;
 
     public class Startup
     {
@@ -37,10 +39,14 @@ namespace MyShop
             }) 
                 .AddEntityFrameworkStores<MyShopDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(option => 
+            {
+                option.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services.AddTransient<IGoodsService, GoodsService>();
             services.AddTransient<IMerchantService, MerchantService>();
+            services.AddTransient<IPurchaseService, PurchaseService>();
         }
 
 

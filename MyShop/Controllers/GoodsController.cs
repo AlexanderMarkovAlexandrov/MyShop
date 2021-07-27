@@ -1,5 +1,6 @@
 ﻿namespace MyShop.Controllers
 {
+    using System.Linq;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Data;
@@ -7,14 +8,17 @@
     using MyShop.Infrastructures;
     using MyShop.Models.Goods;
     using MyShop.Services.Goods;
-    using System.Linq;
+    using MyShop.Services.Goods.Models;
+    using MyShop.Services.Purchase;
 
     public class GoodsController : Controller
     {
         private readonly IGoodsService goods;
         private readonly MyShopDbContext data;
-        public GoodsController(MyShopDbContext data, IGoodsService goods)
+        private readonly IPurchaseService purchase;
+        public GoodsController(MyShopDbContext data, IGoodsService goods, IPurchaseService purchase)
         {
+            this.purchase = purchase;
             this.goods = goods;
             this.data = data;
         }
@@ -96,60 +100,36 @@
 
         public IActionResult Details(string id)
         {
-            var goods = this.data
-                .Goods
-                .Where(g => g.Id == id)
-                .FirstOrDefault();
-            if (goods == null)
+            var goodsDetails = this.goods.Details(id);
+            if (goodsDetails == null)
             {
                 return BadRequest();
             }
-            var goodsData = new GoodsDetailsViewModel
-            {
-                Id = goods.Id,
-                Title = goods.Title,
-                ImageUrl = goods.ImageUrl,
-                Description = goods.Description,
-                Pieces = 0,
-                Price = goods.Price
-            };
-            return View(goodsData);
+           
+            return View(goodsDetails);
         }
         [HttpPost]
         [Authorize]
-        public IActionResult Details(GoodsDetailsViewModel goods)
+        public IActionResult Details(GoodsDetailsServiceModel currGoods)
         {
-            var goodsData = this.data
-                .Goods
-                .Where(g => g.Id == goods.Id)
-                .FirstOrDefault();
-            if (goods == null)
+            
+            if (!this.goods.IsGoods(currGoods.Id) )
             {
                 return BadRequest();
             }
-            goods.Title = goodsData.Title;
-            goods.Price = goodsData.Price;
-            goods.ImageUrl = goodsData.ImageUrl;
-            goods.Description = goodsData.Description;
-            if (goods.Pieces == 0)
+            if (currGoods.Pieces == 0)
             {
-                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces not must be zero.");
-                return View(goods);
+                this.ModelState.AddModelError(nameof(currGoods.Pieces), "Pieces not must be zero.");
+                return View(currGoods);
             }
-            if (goods.Pieces > goodsData.Pieces)
+            if (currGoods.Pieces > this.goods.GoodsPieces(currGoods.Id))
             {
-                this.ModelState.AddModelError(nameof(goods.Pieces), "Pieces are more than the available.");
-                return View(goods);
+                this.ModelState.AddModelError(nameof(currGoods.Pieces), "Pieces are more than the available.");
+                return View(currGoods);
             }
-            var purchase = new Purchase
-            {
-                GoodsId = goodsData.Id,
-                Pieces = goods.Pieces,
-                BuyerId = this.User.GetId()
-            };
-            goodsData.Pieces -= goods.Pieces;
-            this.data.Purchases.Add(purchase);
-            this.data.SaveChanges();
+
+            var userId = this.User.GetId();
+            var result = this.purchase.Create(currGoods.Id, userId, currGoods.Pieces);
 
             return RedirectToAction("Index", "Home");
         }

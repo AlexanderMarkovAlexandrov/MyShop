@@ -1,4 +1,4 @@
-﻿@model GoodsDetailsViewModel
+﻿@model GoodsDetailsServiceModel
 
 @{
     ViewBag.Title = "Goods Details";
@@ -17,6 +17,10 @@
             <form method="post">
                 <span><label asp-for="Pieces"></label></span>
                 <span><input asp-for="Pieces" type="number" class="form-control" step="any" placeholder="@Model.Pieces"></span>
+                <input asp-for="Description" type="hidden" value="@Model.Description" />
+                <input asp-for="ImageUrl" type="hidden" value="@Model.ImageUrl" />
+                <input asp-for="Title" type="hidden" value="@Model.Title" />
+                <input asp-for="Price" type="hidden" value="@Model.Price" />
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <span>
                     <input class="btn btn-primary float-right" type="submit" value="BUY NOW" />

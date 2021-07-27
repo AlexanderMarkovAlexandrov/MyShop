@@ -1,32 +1,26 @@
 ﻿namespace MyShop.Controllers
 {
     using System.Diagnostics;
-    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
-    using MyShop.Data;
     using MyShop.Models;
-    using MyShop.Services.Goods.Models;
+    using MyShop.Services.Goods;
 
     public class HomeController : Controller
     {
-        private readonly MyShopDbContext data;
-        public HomeController(MyShopDbContext data) 
-            => this.data = data;
+        private readonly IGoodsService goods;
+        public HomeController(IGoodsService goods) 
+            => this.goods = goods;
         public IActionResult Index()
         {
-            var goods = this.data.Goods
-                .ToList()
-                .OrderByDescending(g => g.CreatedOn)
-                .Take(4)
-                .Select(g => new CoodsServiceModel
-                {
-                    Id = g.Id,
-                    ImageUrl = g.ImageUrl,
-                    Title = g.Title
-                }).ToList();
+            var goods = this.goods.All(
+                    0,
+                    0,
+                    null,
+                    4,
+                    1
+                );
 
-          
-            return View(goods);
+            return View(goods.Goods);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

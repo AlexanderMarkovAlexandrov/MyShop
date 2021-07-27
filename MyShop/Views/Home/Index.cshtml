@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CoodsServiceModel>
+﻿@model IEnumerable<GoodsServiceModel>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -7,18 +7,5 @@
     <a asp-controller="Goods" asp-action="All">See All Goods</a>
     </div>
     <h3 class="text-center mb-4">New Arival</h3>
-    <div class="row">
-        @foreach (var goods in Model)
-        {
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="card">
-                    <img src="@goods.ImageUrl" class="card-img-top" alt="@goods.Title">
-                    <div class="card-body text-center">
-                        <h5 class="card-title text-center">@goods.Title</h5>
-                        <a asp-controller="Goods" asp-action="Details" asp-route-id="@goods.Id" class="btn btn-primary">View More</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+    <partial name="_AllGoodsPartial" />
 </div>

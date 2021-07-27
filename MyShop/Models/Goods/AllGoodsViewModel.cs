@@ -17,8 +17,8 @@
 
         [Display(Name = "Choose offers from City")]
         public int TownId { get; set; }
-        public IEnumerable<CategoryCerviceModel> Categories { get; set; }
+        public IEnumerable<CategoryServiceModel> Categories { get; set; }
         public IEnumerable<TownServiceModel> Towns { get; set; }
-        public IEnumerable<CoodsServiceModel> Goods { get; set; }
+        public IEnumerable<GoodsServiceModel> Goods { get; set; }
     }
 }
