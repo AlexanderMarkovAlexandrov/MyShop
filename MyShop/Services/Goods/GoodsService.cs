@@ -1,8 +1,10 @@
 ﻿namespace MyShop.Services.Goods
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using MyShop.Data;
+    using MyShop.Data.Models;
     using MyShop.Services.Goods.Models;
 
     public class GoodsService : IGoodsService
@@ -12,6 +14,54 @@
         public GoodsService(MyShopDbContext data)
             => this.data = data;
 
+        public string Create(
+            string Title,
+            decimal Price,
+            int Pieces,
+            string ImageUrl,
+            string Description,
+            int CategoryId,
+            int TownId,
+            int merchantId)
+        {
+            var newGoods = new Goods
+            {
+                Title = Title,
+                Price = Price,
+                Pieces = Pieces,
+                ImageUrl = ImageUrl,
+                Description = Description,
+                CategoryId = CategoryId,
+                TownId = TownId,
+                MerchantId = merchantId
+            };
+            this.data.Goods.Add(newGoods);
+            this.data.SaveChanges();
+            return newGoods.Id; 
+        }
+
+        public void Edit(
+            string Id,
+            string Title, 
+            decimal Price, 
+            int Pieces, 
+            string ImageUrl, 
+            string Description, 
+            int CategoryId, 
+            int TownId )
+        {
+            var goods = this.data.Goods.Find(Id);
+
+            goods.Title = Title;
+            goods.Price = Price;
+            goods.ImageUrl = ImageUrl;
+            goods.Pieces = Pieces;
+            goods.CategoryId = CategoryId;
+            goods.TownId = TownId;
+            goods.Description = Description;
+
+            this.data.SaveChanges();
+        }
         public GoodsQueryServiceModel All(
             int townId, 
             int categoruId, 
@@ -36,6 +86,7 @@
 
             var goods = goodsQuery
                 .OrderByDescending(g => g.CreatedOn)
+                .Where(g=> g.CreatedOn > DateTime.Now.AddDays(-30))
                 .Skip((currentPage - 1) * goodsPerPage)
                 .Take(goodsPerPage)
                 .Select(g => new GoodsServiceModel
@@ -63,15 +114,31 @@
                     Title = g.Title,
                     ImageUrl = g.ImageUrl,
                     Description = g.Description,
-                    Pieces = 0,
+                    Pieces = g.Pieces,
                     Price = g.Price,
-                    MerchantId = g.MerchantId
+                    CategoryId = g.CategoryId,
+                    TownId = g.TownId,
+                    MerchantId = g.MerchantId,
+                    UserId = g.Merchant.UserId
                 }).FirstOrDefault();
 
-        public bool IsGoods(string id)
+        public IEnumerable<GoodsServiceModel> MerchantGoods(string id)
+            => this.GetGoods(this.data
+                .Goods
+                .Where(g => g.Merchant.UserId == id));
+
+        public bool GoodsIsByMerchant(string id, int merchantId)
+            => this.data.Goods.Any(g => g.Merchant.Id == merchantId && g.Id == id);
+        public bool GoodsExist(string id)
             => this.data
                 .Goods
                 .Any(g => g.Id == id);
+
+        public bool CategoryExist(int categoryId)
+            => this.data.Categories.Any(g => g.Id == categoryId);
+
+        public bool TownExist(int townId)
+            => this.data.Towns.Any(g => g.Id == townId);
 
         public int GoodsPieces(string id)
             => this.data
@@ -79,7 +146,8 @@
                 .Where(g => g.Id == id)
                 .Select(g => g.Pieces)
                 .FirstOrDefault();
-         public IEnumerable<TownServiceModel> GetTowns()
+
+         public IEnumerable<TownServiceModel> AllTowns()
             => this.data
                 .Towns
                 .Select(t => new TownServiceModel
@@ -90,7 +158,7 @@
                 .OrderBy(t => t.Name)
                 .ToList();
 
-        public IEnumerable<CategoryServiceModel> GetCategories()
+        public IEnumerable<CategoryServiceModel> AllCategories()
             => this.data
                 .Categories
                 .Select(c => new CategoryServiceModel
@@ -100,5 +168,15 @@
                 })
                 .OrderBy(c => c.Name)
                 .ToList();
+        private IEnumerable<GoodsServiceModel> GetGoods(IQueryable<Goods> goodsQuery)
+            => goodsQuery
+                .Select(g => new GoodsServiceModel
+                {
+                    Id = g.Id,
+                    ImageUrl = g.ImageUrl,
+                    Title = g.Title,
+                    Price = g.Price
+                }).ToList();
+
     }
 }

@@ -30,13 +30,14 @@ namespace MyShop
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }) 
+            })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyShopDbContext>();
 
             services.AddControllersWithViews(option => 

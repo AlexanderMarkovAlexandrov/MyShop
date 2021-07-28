@@ -9,26 +9,30 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="MyPurchases">My Purchases</a>
-        </li>
+        var userIsAdmin = User.IsAdmin();
+        @if (!userIsAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="MyPurchases">My Purchases</a>
+            </li>
 
-        var userId = User.GetId();
-        var isMerchant = Merchant.IsMerchant(userId);
-        if (isMerchant)
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Add">Add Goods</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="MyGoods" title="Manage">My Goods</a>
-            </li>
-        }
-        else
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="Create" title="Manage">Register as Merchant</a>
-            </li>
+            var userId = User.GetId();
+            var isMerchant = Merchant.MerchantIdByUser(userId);
+            if (isMerchant != 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Add">Add Goods</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="MyGoods" title="Manage">My Goods</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="Create" title="Manage">Register as Merchant</a>
+                </li>
+            }
         }
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Accaunt</a>

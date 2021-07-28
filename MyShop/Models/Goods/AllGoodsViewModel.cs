@@ -5,7 +5,7 @@
     using MyShop.Services.Goods.Models;
     public class AllGoodsViewModel
     {
-        public int GoodsPerPage { get; set; } = 2;
+        public int GoodsPerPage { get; set; } = 4;
         public int TotalGoods { get; set; }
         public int CurrentPage { get; set; } = 1;
 

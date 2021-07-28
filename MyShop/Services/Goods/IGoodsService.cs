@@ -1,20 +1,45 @@
-﻿using MyShop.Services.Goods.Models;
-using System.Collections.Generic;
-
-namespace MyShop.Services.Goods
+﻿namespace MyShop.Services.Goods
 {
+    using System.Collections.Generic;
+    using MyShop.Services.Goods.Models;
+
     public interface IGoodsService
     {
-        GoodsQueryServiceModel All(
+        public GoodsQueryServiceModel All(
             int townId,
             int categoruId,
             string search,
             int goodsPerPage,
             int currentPage);
-        bool IsGoods(string id);
-        int GoodsPieces(string id);
-        GoodsDetailsServiceModel Details(string id);
-        IEnumerable<TownServiceModel> GetTowns();
-        IEnumerable<CategoryServiceModel> GetCategories();
+
+        public string Create(
+            string Title,
+            decimal Price,
+            int Pieces,
+            string ImageUrl,
+            string Description,
+            int CategoryId,
+            int TownId,
+            int merchantId);
+
+        public void Edit(
+            string Id,
+            string Title,
+            decimal Price,
+            int Pieces,
+            string ImageUrl,
+            string Description,
+            int CategoryId,
+            int TownId);
+
+        public bool GoodsExist(string id);
+        public bool GoodsIsByMerchant(string id, int merchantId);
+        public int GoodsPieces(string id);
+        public bool CategoryExist(int categoriId);
+        public bool TownExist(int townId);
+        public GoodsDetailsServiceModel Details(string id);
+        public IEnumerable<GoodsServiceModel> MerchantGoods(string userId); 
+        public IEnumerable<TownServiceModel> AllTowns();
+        public IEnumerable<CategoryServiceModel> AllCategories();
     }
 }

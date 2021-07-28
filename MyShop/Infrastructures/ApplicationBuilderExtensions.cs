@@ -1,22 +1,28 @@
 ﻿namespace MyShop.Infrastructures
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using MyShop.Data;
     using MyShop.Data.Models;
-    using System.Linq;
+    using static MyShop.WebConstants;
 
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
             using var scopedServces = app.ApplicationServices.CreateScope();
-            var data = scopedServces.ServiceProvider.GetService<MyShopDbContext>();
+            var serviceProvider = scopedServces.ServiceProvider;
+            var data = serviceProvider.GetRequiredService<MyShopDbContext>();
             data.Database.Migrate();
 
             SeedCategories(data);
             SeedTowns(data);
+            SeedAdministrator(serviceProvider);
             return app;
         }
         private static void SeedCategories(MyShopDbContext data)
@@ -62,6 +68,38 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator( IServiceProvider service)
+        {
+            var userManager = service.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    {
+                        return;
+                    }
+                    var role = new IdentityRole { Name = AdministratorRoleName };
+                    await roleManager.CreateAsync(role);
+
+                    const string email = "admin@admin.com";
+                    const string password = "admin123";
+
+                    var user = new IdentityUser
+                    {
+                        Email = email,
+                        UserName = email
+                    };
+
+                    await userManager.CreateAsync(user, password);
+
+                    await userManager.AddToRoleAsync(user, role.Name);
+
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

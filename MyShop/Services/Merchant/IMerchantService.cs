@@ -1,7 +1,10 @@
 ﻿namespace MyShop.Services.Merchant
 {
+    using MyShop.Data.Models;
     public interface IMerchantService
     {
-        public bool IsMerchant(string userId); 
+        public int MerchantIdByUser(string userId);
+
+        
     }
 }

@@ -12,7 +12,7 @@
         public string Id { get; init; } = Guid.NewGuid().ToString();
         [Required]
         [MaxLength(TitleMaxLength)]
-        public string Title { get; init; }
+        public string Title { get; set; }
         [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
@@ -20,11 +20,11 @@
         public int Pieces { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         [Required]
-        public int CategoryId { get; init; }
-        public Category Category { get; init; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         [Required]
-        public int TownId { get; init; }
-        public Town Town { get; init; }
+        public int TownId { get; set; }
+        public Town Town { get; set; }
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }

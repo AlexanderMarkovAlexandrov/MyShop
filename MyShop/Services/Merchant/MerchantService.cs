@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using MyShop.Data;
+    using MyShop.Data.Models;
 
     public class MerchantService : IMerchantService
     {
@@ -9,7 +10,10 @@
 
         public MerchantService(MyShopDbContext data)
             => this.data = data;
-        public bool IsMerchant(string userId)
-            => this.data.Merchants.Any(c => c.UserId == userId);
+        public int MerchantIdByUser(string userId)
+            => this.data.Merchants
+                .Where(c => c.UserId == userId)
+                .Select(c=> c.Id)
+                .FirstOrDefault();
     }
 }
