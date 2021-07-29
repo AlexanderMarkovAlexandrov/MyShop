@@ -2,29 +2,37 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyShop.Data;
-    using MyShop.Data.Models;
     using MyShop.Infrastructures;
     using MyShop.Models.Merchant;
-    using System.Linq;
+    using MyShop.Services.Goods;
+    using MyShop.Services.Merchant;
+    using MyShop.Services.Purchase;
 
-    public class MerchantController :Controller
+    public class MerchantController : Controller
     {
-        private readonly MyShopDbContext data;
-        public MerchantController(MyShopDbContext data) => this.data = data;
-        [Authorize]
+        private readonly IGoodsService goods;
+        private readonly IPurchaseService purchase;
+        private readonly IMerchantService merchant;
+        public MerchantController(IMerchantService merchant, IPurchaseService purchase, IGoodsService goods)
+        {
+            this.merchant = merchant;
+            this.goods = goods;
+            this.purchase = purchase;
+        }
 
+
+        [Authorize]
         public IActionResult Create()
             => View();
-      
+
         [HttpPost]
         [Authorize]
         public IActionResult Create(CreateMerchantFormModel merchant)
         {
-            var isMerchant = this.data.Merchants.Any(c => c.UserId == this.User.GetId());
-            var isMerchantName = this.data.Merchants.Any(c => c.Name == merchant.Name);
-            var isMerchantPhone = this.data.Merchants.Any(c => c.PhoneNumber == merchant.PhoneNumber);
-            if (isMerchant)
+            var isMerchant = this.merchant.MerchantIdByUser(this.User.GetId());
+            var isMerchantName = this.merchant.IsMerchantName(merchant.Name);
+            var isMerchantPhone = this.merchant.IsMerchantName(merchant.PhoneNumber);
+            if (isMerchant != 0)
             {
                 this.ModelState.AddModelError(nameof(merchant), "The Merchant allready exist.");
             }
@@ -41,17 +49,32 @@
                 return View(merchant);
             }
 
-            var newMarchant = new Merchant
-            {
-                Name = merchant.Name,
-                PhoneNumber = merchant.PhoneNumber,
-                UserId = this.User.GetId(),
-            };
-
-            this.data.Merchants.Add(newMarchant);
-            this.data.SaveChanges();
+            this.merchant.Create(
+                merchant.Name,
+                merchant.PhoneNumber,
+                this.User.GetId()
+                );
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public IActionResult MyGoods()
+        {
+            var userId = this.User.GetId();
+            var goods = this.goods.MerchantGoods(userId);
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("All", "Goods");
+            }
+            return View(goods);
+        }
+        [Authorize]
+        public IActionResult MySales()
+        {
+            var userId = this.User.GetId();
+
+            return View();
         }
     }
 }

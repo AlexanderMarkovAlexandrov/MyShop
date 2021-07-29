@@ -42,18 +42,6 @@
         }
 
         [Authorize]
-        public IActionResult MyGoods()
-        {
-            var userId = this.User.GetId();
-            var goods = this.goods.MerchantGoods(userId);
-            if (User.IsAdmin())
-            {
-                return RedirectToAction(nameof(All));
-            }
-            return View(goods);
-        }
-
-        [Authorize]
         public IActionResult Add()
         {
             var userId = this.User.GetId();
@@ -162,7 +150,7 @@
             goods.CategoryId,
             goods.TownId);
 
-            return RedirectToAction(nameof(MyGoods));
+            return RedirectToAction("MyGoods", "Merchant");
         }
 
         

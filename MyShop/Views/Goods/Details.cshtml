@@ -14,7 +14,7 @@
                 <label asp-for="Price"></label>
             </span>
             <span>@Model.Price lv</span>
-            <form method="post">
+            <form method="post" >
                 <span><label asp-for="Pieces"></label></span>
                 <span><input asp-for="Pieces" type="number" class="form-control" placeholder=""></span>
                 <input asp-for="Description" type="hidden" value="@Model.Description" />
@@ -23,9 +23,8 @@
                 <input asp-for="Price" type="hidden" value="@Model.Price" />
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <span>
-                    <input class="btn btn-primary float-right" type="submit" value="BUY NOW" />
+                    <input  class="btn btn-primary float-right" type="submit" value="BUY NOW"/>
                 </span>
-
             </form>
         </div>
     </div>

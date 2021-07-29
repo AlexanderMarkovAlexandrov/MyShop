@@ -3,59 +3,8 @@
 @{
     ViewBag.Title = "Add Goods";
 }
-<div class="row">
-    <div class="col-sm-12 offset-2 col-md-8 offset-3 col-xl-6">
-        <h2 class="text-center">@ViewBag.Title</h2>
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Title"></label>
-                <input asp-for="Title" type="text" class="form-control" placeholder="Write Title">
-                <span asp-validation-for="Title" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" type="url" class="form-control" placeholder="Fill in ImageUrl">
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price"></label>
-                <input asp-for="Price" type="number" class="form-control" step="any" placeholder="Write price">
-                <span asp-validation-for="Price" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Pieces"></label>
-                <input asp-for="Pieces" type="number" class="form-control" placeholder="Write price">
-                <span asp-validation-for="Pieces" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" rows="3" class="form-control" placeholder="Write Description"></textarea>
-                <span asp-validation-for="Description" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId"></label>
-                <select asp-for="CategoryId" class="form-control">
-                    @foreach (var category in Model.Categories)
-                    {
-                        <option value="@category.Id">@category.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="CategoryId" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TownId"></label>
-                <select asp-for="TownId" class="form-control">
-                    @foreach (var town in Model.Towns)
-                    {
-                        <option value="@town.Id">@town.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="TownId" class="small text-danger"></span>
-            </div>
-            <input class="btn btn-primary float-right" type="submit" value="Save" />
-        </form>
-    </div>
-</div>
+<partial name="_GoodsFormPartial" />
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

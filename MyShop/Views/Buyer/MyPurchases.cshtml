@@ -1,1 +1,40 @@
-﻿My Purchases
+﻿@model IEnumerable<PurchaseServiceModel>
+
+@{
+    ViewBag.Title = "My Purchases";
+}
+<h3 class="col-md-4 offset-md-4">@ViewBag.Title</h3>
+@if (!Model.Any())
+{
+    <h2 class="col-md-6 offset-md-3">You do not have Purchases!</h2>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Image</th>
+                <th scope="col">Goods Title</th>
+                <th scope="col">Pieces</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var goods = Model.ToList()[i];
+                var number = i + 1;
+                <tr>
+                    <th scope="row">@number</th>
+                    <td>@goods.CreatedOn.ToShortDateString()</td>
+                    <td><img src="@goods.GoodsImg" class="card-img-top" style="max-width:60px; max-height:60px " alt="@goods.GoodsTitle"></td>
+                    <td>@goods.GoodsTitle</td>
+                    <td>@goods.Pieces</td>
+                    <td>@goods.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

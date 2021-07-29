@@ -5,5 +5,13 @@
 }
 <div>
     <h3 class="text-center mb-4">@ViewBag.Title</h3>
-    <partial name="_AllGoodsPartial" />
+    @if (!Model.Any())
+    {
+        <h2 class="text-center mb-4">You do not have Goods!</h2>
+    }
+    else
+    {
+        <partial name="_AllGoodsPartial" />
+    }
+
 </div>

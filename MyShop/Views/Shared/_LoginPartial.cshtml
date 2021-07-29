@@ -21,10 +21,13 @@
             if (isMerchant != 0)
             {
                 <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="MySales">My Sales</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Add">Add Goods</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="MyGoods" title="Manage">My Goods</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="MyGoods" title="Manage">My Goods</a>
                 </li>
             }
             else

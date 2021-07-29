@@ -15,5 +15,26 @@
                 .Where(c => c.UserId == userId)
                 .Select(c=> c.Id)
                 .FirstOrDefault();
+        public int Create(string name, string phoneNumber, string userId)
+        {
+            var newMarchant = new Merchant
+            {
+                Name = name,
+                PhoneNumber = phoneNumber,
+                UserId = userId,
+            };
+
+            this.data.Merchants.Add(newMarchant);
+            this.data.SaveChanges();
+            return newMarchant.Id;
+        }
+
+        public bool IsMerchantName(string name)
+            => this.data.Merchants.Any(c => c.Name == name);
+
+        public bool isMrchantPhoneNember(string phoneNumber)
+            => this.data.Merchants.Any(c => c.PhoneNumber == phoneNumber);
+
+        
     }
 }
