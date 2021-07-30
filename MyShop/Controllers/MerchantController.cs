@@ -67,14 +67,25 @@
             {
                 return RedirectToAction("All", "Goods");
             }
+
             return View(goods);
         }
+
         [Authorize]
         public IActionResult MySales()
         {
-            var userId = this.User.GetId();
+            var isMerchant = this.merchant.MerchantIdByUser(this.User.GetId());
+            if (isMerchant == 0)
+            {
+                return Unauthorized();
+            }
+            var goods = this.purchase.PurchasesByMerchant(isMerchant);
+            var totalAmount = this.merchant.TotalSalesAmount(isMerchant);
 
-            return View();
+            return View(new MerchantSalesWiewModel {
+            Goods = goods,
+            TotalSalesAmount = totalAmount,
+            });
         }
     }
 }

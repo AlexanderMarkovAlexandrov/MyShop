@@ -9,6 +9,8 @@
 
         public bool isMrchantPhoneNember(string phoneNumber);
 
+        public decimal TotalSalesAmount(int merchantId);
+
         public int Create(string name, string phoneNumber, string userId);
     }
 }

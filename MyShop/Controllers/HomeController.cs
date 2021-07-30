@@ -12,13 +12,7 @@
             => this.goods = goods;
         public IActionResult Index()
         {
-            var goods = this.goods.All(
-                    0,
-                    0,
-                    null,
-                    4,
-                    1
-                );
+            var goods = this.goods.All(0,0,null,4,1);
 
             return View(goods.Goods);
         }

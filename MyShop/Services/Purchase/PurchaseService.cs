@@ -52,11 +52,11 @@
                 .ToList();
             return purchases;
         }
-        public IEnumerable<PurchaseServiceModel> PurchasesByMerchant(string userId)
+        public IEnumerable<PurchaseServiceModel> PurchasesByMerchant(int merchantId)
         {
             var purchases = this.data
                 .Purchases
-                .Where(p => p.Goods.Merchant.UserId == userId)
+                .Where(p => p.Goods.MerchantId == merchantId)
                 .Select(p => new PurchaseServiceModel
                 {
                     Id = p.Id,
@@ -65,7 +65,7 @@
                     CreatedOn = p.CreatedOn,
                     GoodsTitle = p.Goods.Title,
                     GoodsImg = p.Goods.ImageUrl,
-                    BuyerName = p.Buyer
+                    BuyerName = p.BuyerId
                 })
                 .ToList();
             return purchases;

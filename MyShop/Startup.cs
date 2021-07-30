@@ -10,7 +10,6 @@ namespace MyShop
     using Microsoft.Extensions.Hosting;
     using MyShop.Data;
     using MyShop.Infrastructures;
-    using MyShop.Services.Buyer;
     using MyShop.Services.Goods;
     using MyShop.Services.Merchant;
     using MyShop.Services.Purchase;
@@ -46,7 +45,6 @@ namespace MyShop
                 option.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
-            services.AddTransient<IBuyerService, BuyerService>();
             services.AddTransient<IGoodsService, GoodsService>();
             services.AddTransient<IMerchantService, MerchantService>();
             services.AddTransient<IPurchaseService, PurchaseService>();

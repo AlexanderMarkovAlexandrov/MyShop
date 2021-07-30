@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyShop.Data;
     using MyShop.Infrastructures;
     using MyShop.Models.Goods;
     using MyShop.Services.Goods;
@@ -13,15 +12,13 @@
     public class GoodsController : Controller
     {
         private readonly IGoodsService goods;
-        private readonly MyShopDbContext data;
         private readonly IPurchaseService purchase;
         private readonly IMerchantService merchant;
-        public GoodsController(MyShopDbContext data, IGoodsService goods, IPurchaseService purchase, IMerchantService merchant)
+        public GoodsController( IGoodsService goods, IPurchaseService purchase, IMerchantService merchant)
         {
             this.merchant = merchant;
             this.purchase = purchase;
             this.goods = goods;
-            this.data = data;
         }
 
         public IActionResult All([FromQuery] AllGoodsViewModel query)
@@ -92,7 +89,7 @@
                 merchantId
                 );
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("All", "Goods");
         }
 
         [Authorize]
