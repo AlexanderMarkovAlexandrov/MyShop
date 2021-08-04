@@ -6,5 +6,6 @@
         public string Title { get; init; }
         public string ImageUrl { get; init; }
         public decimal Price { get; init; }
+        public int Pieces { get; set; }
     }
 }

@@ -8,24 +8,15 @@
     <div class="card">
         <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title">
         <div class="card-body">
-            <label asp-for="Description"></label>
-            <div>@Model.Description</div>
+            <label asp-for="Description">Description:</label>
+            <div class="mb-4">@Model.Description</div>
             <span>
-                <label asp-for="Price"></label>
+                <label asp-for="Price">Price:</label>
             </span>
-            <span>@Model.Price lv</span>
-            <form method="post" >
-                <span><label asp-for="Pieces"></label></span>
-                <span><input asp-for="Pieces" type="number" class="form-control" placeholder=""></span>
-                <input asp-for="Description" type="hidden" value="@Model.Description" />
-                <input asp-for="ImageUrl" type="hidden" value="@Model.ImageUrl" />
-                <input asp-for="Title" type="hidden" value="@Model.Title" />
-                <input asp-for="Price" type="hidden" value="@Model.Price" />
-                <div class="text-danger" asp-validation-summary="All"></div>
-                <span>
-                    <input  class="btn btn-primary float-right" type="submit" value="BUY NOW"/>
-                </span>
-            </form>
+            <span>@Model.Price EUR</span>
+            <span>
+                <a class="btn btn-primary float-right" asp-controller="Buyer" asp-action="Buy" asp-route-id="@Model.Id">BUY NOW</a>
+            </span>
         </div>
     </div>
 </div>

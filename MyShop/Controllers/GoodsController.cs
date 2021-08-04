@@ -150,7 +150,6 @@
             return RedirectToAction("MyGoods", "Merchant");
         }
 
-        
         public IActionResult Details(string id)
         {
             var goodsDetails = this.goods.Details(id);
@@ -161,34 +160,6 @@
             }
            
             return View(goodsDetails);
-        }
-        [HttpPost]
-        [Authorize]
-        public IActionResult Details(GoodsDetailsServiceModel currGoods)
-        {
-            
-            if (!this.goods.GoodsExist(currGoods.Id) )
-            {
-                return BadRequest();
-            }
-            if (currGoods.Pieces == 0)
-            {
-                this.ModelState.AddModelError(nameof(currGoods.Pieces), "Pieces not must be zero.");
-                return View(currGoods);
-            }
-            if (currGoods.Pieces > this.goods.GoodsPieces(currGoods.Id))
-            {
-                this.ModelState.AddModelError(nameof(currGoods.Pieces), "Pieces are more than the available.");
-                return View(currGoods);
-            }
-
-            var userId = this.User.GetId();
-            var result = this.purchase.Create(currGoods.Id, userId, currGoods.Pieces);
-            if (result != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return View(currGoods);
         }
     }
 }

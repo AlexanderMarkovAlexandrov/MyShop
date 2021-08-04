@@ -1,0 +1,47 @@
+﻿@model PurchaseViewModel
+
+@{
+    ViewBag.Title = "Purchase";
+}
+<h3 class="col-md-4 offset-md-4">@ViewBag.Title</h3>
+@if (Model.goods == null)
+{
+    <h2 class="col-md-6 offset-md-3">Please chose Goods!</h2>
+}
+else
+{
+<form method="post">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Goods Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price</th>
+                <th scope="col">Pieces</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.goods.Title</td>
+                <td><img src="@Model.goods.ImageUrl" class="card-img-top" style="max-width:60px; max-height:60px " alt="@Model.goods.Title"></td>
+                <td id="price">@Model.goods.Price</td>
+                <td><input asp-for="Pieces" type="number" id="quantity" value="@Model.Pieces" oninput="calc();" /></td>
+                <td id="amount">0</td>
+            </tr>
+        </tbody>
+    </table>
+    <span asp-validation-for="Pieces" class="small text-danger"></span>
+    <input class="btn btn-primary float-right" type="submit" value="CONFIRM" />
+</form>
+}
+<script>
+    function calc() {
+        var price = document.getElementById("price").innerText;
+        var price = parseFloat(price).toFixed(2);
+        var quantity = document.getElementById("quantity").value;
+        var quantity = parseInt(quantity);
+        var amount = price * quantity;
+        document.getElementById("amount").innerText = amount.toFixed(2);
+    }
+</script>

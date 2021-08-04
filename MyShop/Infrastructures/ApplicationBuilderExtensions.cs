@@ -15,8 +15,8 @@
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            using var scopedServces = app.ApplicationServices.CreateScope();
-            var serviceProvider = scopedServces.ServiceProvider;
+            using var scopedServices = app.ApplicationServices.CreateScope();
+            var serviceProvider = scopedServices.ServiceProvider;
             var data = serviceProvider.GetRequiredService<MyShopDbContext>();
             data.Database.Migrate();
 

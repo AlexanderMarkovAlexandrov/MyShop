@@ -114,7 +114,6 @@
                     Title = g.Title,
                     ImageUrl = g.ImageUrl,
                     Description = g.Description,
-                    Pieces = g.Pieces,
                     Price = g.Price,
                     CategoryId = g.CategoryId,
                     TownId = g.TownId,
@@ -177,6 +176,17 @@
                     Title = g.Title,
                     Price = g.Price
                 }).ToList();
-
+        public GoodsServiceModel GoodsById(string id)
+            => this.data
+                .Goods
+                .Where(g => g.Id == id)
+                .Select(g=> new GoodsServiceModel
+                {
+                    Id = g.Id,
+                    ImageUrl = g.ImageUrl,
+                    Title = g.Title,
+                    Price = g.Price
+                })
+                .FirstOrDefault();
     }
 }

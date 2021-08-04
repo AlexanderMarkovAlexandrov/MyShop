@@ -2,7 +2,6 @@
 {
     public class GoodsDetailsServiceModel : GoodsServiceModel
     {
-        public int Pieces { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; init; }
         public int TownId { get; init; }
