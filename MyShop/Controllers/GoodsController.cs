@@ -5,7 +5,6 @@
     using MyShop.Infrastructures;
     using MyShop.Models.Goods;
     using MyShop.Services.Goods;
-    using MyShop.Services.Goods.Models;
     using MyShop.Services.Merchant;
     using MyShop.Services.Purchase;
 
@@ -160,6 +159,40 @@
             }
            
             return View(goodsDetails);
+        }
+        [Authorize]
+        public IActionResult Delete(string id)
+        {
+            if (!this.goods.GoodsExist(id))
+            {
+                return BadRequest();
+            }
+            var userId = this.User.GetId();
+            var merchantId = this.merchant.MerchantIdByUser(userId);
+            if (!this.goods.GoodsIsByMerchant(id, merchantId) && !this.User.IsAdmin())
+            {
+                return BadRequest();
+            }
+            var goods = this.goods.GoodsById(id);
+            return View(goods);
+        }
+
+        [Authorize]
+        public IActionResult DeleteConfirm(string id)
+        {
+            if (!this.goods.GoodsExist(id))
+            {
+                return BadRequest();
+            }
+            var userId = this.User.GetId();
+            var merchantId = this.merchant.MerchantIdByUser(userId);
+            if (!this.goods.GoodsIsByMerchant(id, merchantId) && !this.User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.goods.Delete(id);
+            return RedirectToAction("MyGoods", "Merchant");
         }
     }
 }

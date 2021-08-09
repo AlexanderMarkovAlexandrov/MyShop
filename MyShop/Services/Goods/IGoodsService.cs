@@ -38,6 +38,7 @@
         public bool CategoryExist(int categoriId);
         public bool TownExist(int townId);
         public GoodsDetailsServiceModel Details(string id);
+        public void Delete(string id);
         public GoodsServiceModel GoodsById(string id);
         public IEnumerable<GoodsServiceModel> MerchantGoods(string userId); 
         public IEnumerable<TownServiceModel> AllTowns();

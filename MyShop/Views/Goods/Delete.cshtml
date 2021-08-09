@@ -1,0 +1,25 @@
+﻿@model GoodsServiceModel
+@{
+    ViewBag.Title = "Delete Goods";
+}
+<h3 class="col-md-4 offset-md-3 mb-4">Confirm Deletion of the Goods!</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Goods Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price EUR</th>
+                <th scope="col">Pieces</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Title</td>
+                <td><img src="@Model.ImageUrl" class="card-img-top" style="max-width:60px; max-height:60px " alt="@Model.Title"></td>
+                <td id="price">@Model.Price</td>
+                <td>@Model.Pieces</td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary float-right" asp-controller="Goods" asp-action="DeleteConfirm" asp-route-id="@Model.Id">CONFIRM</a>  

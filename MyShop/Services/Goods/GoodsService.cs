@@ -84,18 +84,11 @@
                 goodsQuery = goodsQuery.Where(c => c.Title.Contains(search));
             }
 
-            var goods = goodsQuery
+            var goods = this.GetGoods(goodsQuery
                 .OrderByDescending(g => g.CreatedOn)
-                .Where(g=> g.CreatedOn > DateTime.Now.AddDays(-30))
+                .Where(g => g.CreatedOn > DateTime.Now.AddDays(-30))
                 .Skip((currentPage - 1) * goodsPerPage)
-                .Take(goodsPerPage)
-                .Select(g => new GoodsServiceModel
-                {
-                    Id = g.Id,
-                    ImageUrl = g.ImageUrl,
-                    Title = g.Title,
-                    Price = g.Price
-                }).ToList();
+                .Take(goodsPerPage));
 
             return new GoodsQueryServiceModel
             {
@@ -121,6 +114,15 @@
                     UserId = g.Merchant.UserId
                 }).FirstOrDefault();
 
+        public void Delete(string id)
+        {
+            var purchases = this.data.Purchases
+                .Where(p => p.GoodsId == id);
+            var goods = this.data.Goods.First(g=> g.Id == id);
+            this.data.Purchases.RemoveRange(purchases);
+            this.data.Goods.Remove(goods);
+            this.data.SaveChanges();
+        }
         public IEnumerable<GoodsServiceModel> MerchantGoods(string id)
             => this.GetGoods(this.data
                 .Goods
@@ -167,15 +169,7 @@
                 })
                 .OrderBy(c => c.Name)
                 .ToList();
-        private IEnumerable<GoodsServiceModel> GetGoods(IQueryable<Goods> goodsQuery)
-            => goodsQuery
-                .Select(g => new GoodsServiceModel
-                {
-                    Id = g.Id,
-                    ImageUrl = g.ImageUrl,
-                    Title = g.Title,
-                    Price = g.Price
-                }).ToList();
+   
         public GoodsServiceModel GoodsById(string id)
             => this.data
                 .Goods
@@ -185,8 +179,19 @@
                     Id = g.Id,
                     ImageUrl = g.ImageUrl,
                     Title = g.Title,
-                    Price = g.Price
+                    Price = g.Price,
+                    Pieces = g.Pieces
                 })
                 .FirstOrDefault();
+
+        private IEnumerable<GoodsServiceModel> GetGoods(IQueryable<Goods> goodsQuery)
+       => goodsQuery
+           .Select(g => new GoodsServiceModel
+           {
+               Id = g.Id,
+               ImageUrl = g.ImageUrl,
+               Title = g.Title,
+               Price = g.Price
+           }).ToList();
     }
 }

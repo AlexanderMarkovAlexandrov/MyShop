@@ -28,7 +28,7 @@
         [Authorize]
         public IActionResult Buy(string id)
         {
-            if (!this.goods.GoodsExist(id))
+            if (!this.goods.GoodsExist(id))  // check to send empty goods!
             {
                 return BadRequest();
             }
