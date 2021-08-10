@@ -2,7 +2,7 @@
 {
     using System.Security.Claims;
 
-    using static WebConstants;
+    using static MyShop.Areas.Admin.AdminConstants;
     public static class ClaimsPrincipalExtensions
     {
         public static string GetId(this ClaimsPrincipal user)

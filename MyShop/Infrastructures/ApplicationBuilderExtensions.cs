@@ -9,7 +9,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using MyShop.Data;
     using MyShop.Data.Models;
-    using static MyShop.WebConstants;
+    using static MyShop.Areas.Admin.AdminConstants;
 
     public static class ApplicationBuilderExtensions
     {
