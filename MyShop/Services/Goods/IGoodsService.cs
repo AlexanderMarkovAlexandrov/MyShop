@@ -6,11 +6,12 @@
     public interface IGoodsService
     {
         public GoodsQueryServiceModel All(
-            int townId,
-            int categoruId,
-            string search,
             int goodsPerPage,
-            int currentPage);
+            int currentPage,
+            int townId = 0,
+            int categoruId = 0,
+            string search = null
+            );
 
         public string Create(
             string Title,

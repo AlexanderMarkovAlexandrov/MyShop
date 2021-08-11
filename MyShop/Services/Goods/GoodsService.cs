@@ -63,11 +63,12 @@
             this.data.SaveChanges();
         }
         public GoodsQueryServiceModel All(
+            int goodsPerPage,
+            int currentPage,
             int townId, 
             int categoruId, 
-            string search, 
-            int goodsPerPage,
-            int currentPage)
+            string search 
+            )
         {
             var goodsQuery = this.data.Goods.AsQueryable();
 
@@ -191,7 +192,8 @@
                Id = g.Id,
                ImageUrl = g.ImageUrl,
                Title = g.Title,
-               Price = g.Price
+               Price = g.Price,
+               CreatedOn = g.CreatedOn
            }).ToList();
     }
 }

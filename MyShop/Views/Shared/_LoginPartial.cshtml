@@ -27,18 +27,24 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Add">Add Goods</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="MyGoods" title="Manage">My Goods</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="MyGoods">My Goods</a>
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="Create" title="Manage">Register as Merchant</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Merchant" asp-action="Create">Register as Merchant</a>
                 </li>
             }
         }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Administration</a>
+            </li>
+        }
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Accaunt</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Accaunt</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

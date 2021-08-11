@@ -23,11 +23,12 @@
         public IActionResult All([FromQuery] AllGoodsViewModel query)
         {
             var goodsQuery = this.goods.All(
-            query.TownId,
-            query.CategoryId,
-            query.Search,
-            query.GoodsPerPage,
-            query.CurrentPage
+                query.GoodsPerPage,
+                query.CurrentPage,
+                query.TownId,
+                query.CategoryId,
+                query.Search
+
                 );
 
             query.Goods = goodsQuery.Goods;
@@ -146,7 +147,7 @@
             goods.CategoryId,
             goods.TownId);
 
-            return RedirectToAction("MyGoods", "Merchant");
+            return RedirectToAction("Details", new { id });
         }
 
         public IActionResult Details(string id)

@@ -2,7 +2,8 @@
 
 @{
     ViewBag.Title = "Goods Details";
-}
+    var userIsAdmin = User.IsAdmin();
+}    
 <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
     <h5 class="card-title">@Model.Title</h5>
     <div class="card">
@@ -15,7 +16,10 @@
             </span>
             <span>@Model.Price EUR</span>
             <span>
-                <a class="btn btn-primary float-right" asp-controller="Buyer" asp-action="Buy" asp-route-id="@Model.Id">BUY NOW</a>
+                @if (!userIsAdmin)
+                {
+                    <a class="btn btn-primary float-right" asp-controller="Buyer" asp-action="Buy" asp-route-id="@Model.Id">BUY NOW</a>
+                }
             </span>
         </div>
     </div>
