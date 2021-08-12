@@ -4,10 +4,12 @@
     ViewBag.Title = "Goods Details";
     var userIsAdmin = User.IsAdmin();
 }    
-<div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
+<div class="text-center">
+    <h3 class="mb-2">@Model.Merchant</h3>
+    <h5 class="mb-4">Phone number: @Model.PhoneNumber</h5>
     <h5 class="card-title">@Model.Title</h5>
-    <div class="card">
-        <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title">
+    <div class="figure">
+        <img src="@Model.ImageUrl" class="card-img-top"style="max-width: 400px; max-height: 300px" alt="@Model.Title">
         <div class="card-body">
             <label asp-for="Description">Description:</label>
             <div class="mb-4">@Model.Description</div>

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using MyShop.Data;
     using MyShop.Data.Models;
     using MyShop.Services.Goods.Models;
@@ -10,9 +12,12 @@
     public class GoodsService : IGoodsService
     {
         private readonly MyShopDbContext data;
-
-        public GoodsService(MyShopDbContext data)
-            => this.data = data;
+        private readonly IMapper mapper;
+        public GoodsService(MyShopDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
 
         public string Create(
             string Title,
@@ -102,18 +107,8 @@
             => this.data
                 .Goods
                 .Where(g => g.Id == id)
-                .Select(g => new GoodsDetailsServiceModel
-                {
-                    Id = g.Id,
-                    Title = g.Title,
-                    ImageUrl = g.ImageUrl,
-                    Description = g.Description,
-                    Price = g.Price,
-                    CategoryId = g.CategoryId,
-                    TownId = g.TownId,
-                    MerchantId = g.MerchantId,
-                    UserId = g.Merchant.UserId
-                }).FirstOrDefault();
+                .ProjectTo<GoodsDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
         public void Delete(string id)
         {
@@ -175,25 +170,12 @@
             => this.data
                 .Goods
                 .Where(g => g.Id == id)
-                .Select(g=> new GoodsServiceModel
-                {
-                    Id = g.Id,
-                    ImageUrl = g.ImageUrl,
-                    Title = g.Title,
-                    Price = g.Price,
-                    Pieces = g.Pieces
-                })
+                .ProjectTo<GoodsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
         private IEnumerable<GoodsServiceModel> GetGoods(IQueryable<Goods> goodsQuery)
        => goodsQuery
-           .Select(g => new GoodsServiceModel
-           {
-               Id = g.Id,
-               ImageUrl = g.ImageUrl,
-               Title = g.Title,
-               Price = g.Price,
-               CreatedOn = g.CreatedOn
-           }).ToList();
+            .ProjectTo<GoodsServiceModel>(this.mapper.ConfigurationProvider)
+            .ToList();
     }
 }

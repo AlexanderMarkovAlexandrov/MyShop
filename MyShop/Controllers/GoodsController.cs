@@ -1,5 +1,6 @@
 ﻿namespace MyShop.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Infrastructures;
@@ -13,11 +14,13 @@
         private readonly IGoodsService goods;
         private readonly IPurchaseService purchase;
         private readonly IMerchantService merchant;
-        public GoodsController( IGoodsService goods, IPurchaseService purchase, IMerchantService merchant)
+        private readonly IMapper mapper;
+        public GoodsController(IGoodsService goods, IPurchaseService purchase, IMerchantService merchant, IMapper mapper)
         {
             this.merchant = merchant;
             this.purchase = purchase;
             this.goods = goods;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery] AllGoodsViewModel query)
@@ -108,18 +111,10 @@
             {
                 return Unauthorized();
             }
-            return View(new GoodsFormModel
-            {
-                Title = goods.Title,
-                ImageUrl = goods.ImageUrl,
-                Price = goods.Price,
-                Pieces = goods.Pieces,
-                Description = goods.Description,
-                CategoryId = goods.CategoryId,
-                TownId = goods.TownId,
-                Categories = this.goods.AllCategories(),
-                Towns = this.goods.AllTowns()
-            });
+            var formGoods = this.mapper.Map<GoodsFormModel>(goods);
+            formGoods.Categories = this.goods.AllCategories();
+            formGoods.Towns = this.goods.AllTowns();
+            return View(formGoods);
         }
 
         [Authorize]

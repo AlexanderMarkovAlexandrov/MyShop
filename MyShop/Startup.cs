@@ -41,6 +41,8 @@ namespace MyShop
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyShopDbContext>();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews(option => 
             {
                 option.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
