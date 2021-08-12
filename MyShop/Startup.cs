@@ -9,6 +9,7 @@ namespace MyShop
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyShop.Data;
+    using MyShop.Data.Models;
     using MyShop.Infrastructures;
     using MyShop.Services.Goods;
     using MyShop.Services.Merchant;
@@ -30,7 +31,7 @@ namespace MyShop
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;

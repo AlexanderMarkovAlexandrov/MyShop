@@ -1,11 +1,10 @@
 ﻿namespace MyShop.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using MyShop.Data.Models;
 
-    public class MyShopDbContext : IdentityDbContext
+    public class MyShopDbContext : IdentityDbContext<User>
     {
         public MyShopDbContext(DbContextOptions<MyShopDbContext> options)
             : base(options)
@@ -20,7 +19,7 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Merchant>()
-              .HasOne<IdentityUser>()
+              .HasOne<User>()
               .WithOne()
               .HasForeignKey<Merchant>(c => c.UserId)
               .OnDelete(DeleteBehavior.Restrict);
@@ -48,6 +47,7 @@
                 .WithMany(c => c.Goods)
                 .HasForeignKey(c => c.MerchantId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
 
             base.OnModelCreating(modelBuilder);
         }

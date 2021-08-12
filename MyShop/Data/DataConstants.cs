@@ -26,5 +26,8 @@
         public const int NameMinLength = 3;
         public const int PhoneNumberMaxLength = 20;
         public const int PhoneNumberMinLength = 6;
+
+        public const int AddressMaxLength = 100;
+        public const int AddressMinLength = 10;
     }
 }

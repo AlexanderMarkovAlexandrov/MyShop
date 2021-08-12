@@ -30,6 +30,6 @@
         public string Description { get; set; }
         public int MerchantId { get; init; }
         public Merchant Merchant { get; init; }
-        public ICollection<Purchase> Purchases { get; init; } = new List<Purchase>();
+        public IEnumerable<Purchase> Purchases { get; init; } = new List<Purchase>();
     }
 }

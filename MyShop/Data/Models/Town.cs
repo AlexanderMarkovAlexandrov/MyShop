@@ -10,6 +10,6 @@
         [Required]
         [MaxLength(TownMaxLength)]
         public string Name { get; init; }
-        public ICollection<Goods> Goods { get; init; } = new List<Goods>();
+        public IEnumerable<Goods> Goods { get; init; } = new List<Goods>();
     }
 }

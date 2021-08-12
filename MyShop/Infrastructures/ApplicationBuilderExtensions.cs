@@ -72,7 +72,7 @@
 
         private static void SeedAdministrator( IServiceProvider service)
         {
-            var userManager = service.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = service.GetRequiredService<UserManager<User>>();
             var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
 
             Task.Run(async () =>
@@ -87,7 +87,7 @@
                     const string email = "admin@admin.com";
                     const string password = "admin123";
 
-                    var user = new IdentityUser
+                    var user = new User
                     {
                         Email = email,
                         UserName = email
