@@ -29,5 +29,8 @@
 
         public const int AddressMaxLength = 100;
         public const int AddressMinLength = 10;
+
+        public const int PasswordMinLength = 6;
+        public const int PasswordMaxLength = 100;
     }
 }

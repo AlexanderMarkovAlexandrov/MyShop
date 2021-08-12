@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using MyShop.Data.Models;
-
+    using static MyShop.Data.DataConstants;
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -35,7 +35,7 @@
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(PasswordMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = PasswordMinLength)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -44,6 +44,10 @@
             [Display(Name = "Confirm Password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [StringLength(AddressMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = AddressMinLength)]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -56,7 +60,7 @@
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { UserName = Input.Email, Email = Input.Email, Address = Input.Address };
                 var result = await this.userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
