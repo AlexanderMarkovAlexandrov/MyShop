@@ -7,9 +7,15 @@
 <div class="text-center">
     <h3 class="mb-2">@Model.Merchant</h3>
     <h5 class="mb-4">Phone number: @Model.PhoneNumber</h5>
+    @if (this.TempData.ContainsKey(MyShop.Controllers.WebConatants.SuccessMessageKey))
+    {
+        <div class="alert alert-success mb-2 text-center" role="alert">
+            @TempData[MyShop.Controllers.WebConatants.SuccessMessageKey]
+        </div>
+    }
     <h5 class="card-title">@Model.Title</h5>
     <div class="figure">
-        <img src="@Model.ImageUrl" class="card-img-top"style="max-width: 400px; max-height: 300px" alt="@Model.Title">
+        <img src="@Model.ImageUrl" class="card-img-top" style="max-width: 400px; max-height: 300px" alt="@Model.Title">
         <div class="card-body">
             <label asp-for="Description">Description:</label>
             <div class="mb-4">@Model.Description</div>

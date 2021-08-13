@@ -8,7 +8,7 @@
     using MyShop.Services.Goods;
     using MyShop.Services.Merchant;
     using MyShop.Services.Purchase;
-
+    using static WebConatants;
     public class GoodsController : Controller
     {
         private readonly IGoodsService goods;
@@ -31,7 +31,6 @@
                 query.TownId,
                 query.CategoryId,
                 query.Search
-
                 );
 
             query.Goods = goodsQuery.Goods;
@@ -81,7 +80,7 @@
                 goods.Towns = this.goods.AllTowns();
                 return View(goods);
             }
-            this.goods.Create(
+            var id = this.goods.Create(
                 goods.Title,
                 goods.Price,
                 goods.Pieces,
@@ -92,7 +91,9 @@
                 merchantId
                 );
 
-            return RedirectToAction("All", "Goods");
+            this.TempData[SuccessMessageKey] = "You succeed added the Goods!";
+
+            return RedirectToAction("Details", new { id });
         }
 
         [Authorize]
@@ -141,6 +142,8 @@
             goods.Description,
             goods.CategoryId,
             goods.TownId);
+
+            this.TempData[SuccessMessageKey] = "You succeed edit the Goods!";
 
             return RedirectToAction("Details", new { id });
         }

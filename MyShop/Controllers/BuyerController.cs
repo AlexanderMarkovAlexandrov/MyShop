@@ -6,7 +6,7 @@
     using MyShop.Models.Purchase;
     using MyShop.Services.Goods;
     using MyShop.Services.Purchase;
-
+    using static WebConatants;
     public class BuyerController : Controller
     {
         private readonly IPurchaseService purchase;
@@ -62,6 +62,9 @@
 
             var userId = this.User.GetId();
             var result = this.purchase.Create(id, userId, input.Pieces);
+
+            this.TempData[SuccessMessageKey] = "You have purchased the goods successfully";
+
             if (result != null)
             {
                 return RedirectToAction("Index", "Home");

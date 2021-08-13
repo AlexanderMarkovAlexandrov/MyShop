@@ -2,9 +2,15 @@
 @{
     ViewBag.Title = "Home Page";
 }
+@if (this.TempData.ContainsKey(MyShop.Controllers.WebConatants.SuccessMessageKey))
+{
+    <div class="alert alert-success mb-2 text-center" role="alert">
+        @TempData[MyShop.Controllers.WebConatants.SuccessMessageKey]
+    </div>
+}
 <div>
     <div class="text-center  mb-4">
-    <a asp-controller="Goods" asp-action="All">See All Goods</a>
+        <a asp-controller="Goods" asp-action="All">See All Goods</a>
     </div>
     <h3 class="text-center mb-4">New Arival</h3>
     <partial name="_AllGoodsPartial" />

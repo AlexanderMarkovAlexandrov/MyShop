@@ -1,6 +1,7 @@
 ﻿namespace MyShop.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using MyShop.Areas.Admin.Models;
     using MyShop.Services.Goods;
     using static AdminConstants;
 
@@ -13,10 +14,17 @@
             this.goods = goods;
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AdminAllGoodsViewModel query)
         {
-            var goods = this.goods.All(GoodsPerPageConst, CurrentPageConst).Goods;
-            return View(goods);
+            var goodsQuery = this.goods.All(
+                query.GoodsPerPage,
+                query.CurrentPage
+                );
+
+            query.Goods = goodsQuery.Goods;
+            query.TotalGoods = goodsQuery.TotalGoods;
+
+            return View(query);
         }
     }
 }
