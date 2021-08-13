@@ -29,7 +29,6 @@
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
                 this.cache.Set(LatestGoods, goods, cacheOption);
             }
-            
 
             return View(goods.Goods);
         }
