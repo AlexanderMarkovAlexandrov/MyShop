@@ -67,7 +67,7 @@
 
             if (result != null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
             return View(input);

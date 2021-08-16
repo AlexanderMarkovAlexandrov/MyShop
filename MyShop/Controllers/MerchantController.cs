@@ -22,8 +22,7 @@
 
 
         [Authorize]
-        public IActionResult Create()
-            => View();
+        public IActionResult Create() => View();
 
         [HttpPost]
         [Authorize]
@@ -55,7 +54,7 @@
                 this.User.GetId()
                 );
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [Authorize]
@@ -65,7 +64,7 @@
             var goods = this.goods.MerchantGoods(userId);
             if (User.IsAdmin())
             {
-                return RedirectToAction("All", "Goods");
+                return RedirectToAction(nameof(GoodsController.All), "Goods");
             }
 
             return View(goods);

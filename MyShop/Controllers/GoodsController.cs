@@ -93,7 +93,7 @@
 
             this.TempData[SuccessMessageKey] = "You succeed added the Goods!";
 
-            return RedirectToAction("Details", new { id });
+            return RedirectToAction(nameof(GoodsController.Details), new { id });
         }
 
         [Authorize]
@@ -145,7 +145,7 @@
 
             this.TempData[SuccessMessageKey] = "You succeed edit the Goods!";
 
-            return RedirectToAction("Details", new { id });
+            return RedirectToAction(nameof(GoodsController.Details), new { id });
         }
 
         public IActionResult Details(string id)
@@ -191,7 +191,7 @@
             }
 
             this.goods.Delete(id);
-            return RedirectToAction("MyGoods", "Merchant");
+            return RedirectToAction(nameof(MerchantController.MyGoods), "Merchant");
         }
     }
 }

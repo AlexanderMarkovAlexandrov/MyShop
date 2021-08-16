@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Mvc;
     using MyShop.Areas.Admin.Models;
     using MyShop.Services.Goods;
-    using static AdminConstants;
 
     public class GoodsController : AdminController
     {

@@ -7,10 +7,11 @@
     using MyTested.AspNetCore.Mvc;
     using Xunit;
     using static Data.GoodsData;
+
     public class HomeControllerTest
     {
         [Fact]
-        public void IndexPageShouldReturnViewWithCorectModelAndData()
+        public void IndexShouldReturnViewWithCorectModelAndData()
             => MyMvc
                 .Pipeline()
                 .ShouldMap("/")
@@ -21,7 +22,7 @@
                 .Passing(m=>m.ToList().Count == 4));
 
         [Fact]
-        public void ErrorPageShouldReturnView()
+        public void ErrorShouldReturnView()
             => MyMvc
                 .Pipeline()
                 .ShouldMap("/Home/Error")
