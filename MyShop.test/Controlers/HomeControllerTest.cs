@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using MyTested.AspNetCore.Mvc;
     using MyShop.Controllers;
     using MyShop.Services.Goods.Models;
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
     using static Data.GoodsData;
 

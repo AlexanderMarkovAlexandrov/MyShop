@@ -1,12 +1,15 @@
 ﻿namespace MyShop.test.Controlers
 {
+    using System.Linq;
+    using MyTested.AspNetCore.Mvc;
     using MyShop.Controllers;
     using MyShop.Data.Models;
     using MyShop.Models.Goods;
-    using MyTested.AspNetCore.Mvc;
-    using System.Linq;
+    using MyShop.Services.Goods.Models;
     using Xunit;
     using static Data.GoodsData;
+
+
     public class GoodsControllerTest
     {
         [Fact]
@@ -137,6 +140,50 @@
                 .Redirect(redirect => redirect.
                                 To<GoodsController>(c=>c.Details(goodsId)));
 
+        [Theory]
+        [InlineData("GoodsId")]
+        public void DeleteShouldReturnViewWithCorectGoodsAndModel(string goodsId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(data => data
+                             .WithEntities(Merchant(TestUser.Identifier),
+                                           new Goods
+                                           {
+                                               Id = goodsId,
+                                               MerchantId = 1
+                                           })))
+                .Calling(c => c.Delete(goodsId))
+                .ShouldHave()
+                .ActionAttributes(attributs => attributs
+                        .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View(view => view.WithModelOfType<GoodsServiceModel>()
+                .Passing(m => m.Id == goodsId));
 
+        [Theory]
+        [InlineData("GoodsId")]
+        public void DeleteConfirmShouldRemoveGoodsWithCorectDataAndRedirect(string goodsId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(data => data
+                             .WithEntities(Merchant(TestUser.Identifier),
+                                           new Goods
+                                           {
+                                               Id = goodsId,
+                                               MerchantId = 1
+                                           })))
+                .Calling(c => c.DeleteConfirm(goodsId))
+                .ShouldHave()
+                .ActionAttributes(attributs => attributs
+                        .RestrictingForAuthorizedRequests())
+                .Data(data => data
+                                .WithSet<Goods>(goods => !goods
+                                .Any(g => g.Id == goodsId)))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect();
     }
 }

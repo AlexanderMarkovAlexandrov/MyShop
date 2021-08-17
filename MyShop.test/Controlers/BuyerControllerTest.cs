@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using MyTested.AspNetCore.Mvc;
     using MyShop.Controllers;
     using MyShop.Data.Models;
     using MyShop.Models.Purchase;
     using MyShop.Services.Purchase.Models;
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
 
     public class BuyerControllerTest

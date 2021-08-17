@@ -2,13 +2,14 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using MyTested.AspNetCore.Mvc;
     using MyShop.Controllers;
     using MyShop.Data.Models;
     using MyShop.Models.Merchant;
     using MyShop.Services.Goods.Models;
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
     using static Data.GoodsData;
+
     public class MerchantControllerTest
     {
         [Fact]
