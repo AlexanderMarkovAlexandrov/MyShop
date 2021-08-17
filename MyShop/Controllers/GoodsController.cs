@@ -132,7 +132,20 @@
             {
                 return BadRequest();
             }
-
+            if (!this.goods.CategoryExist(goods.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(goods.CategoryId), "The Category does not exist.");
+            }
+            if (!this.goods.TownExist(goods.TownId))
+            {
+                this.ModelState.AddModelError(nameof(goods.TownId), "The Town does not exist.");
+            }
+            if (!ModelState.IsValid)
+            {
+                goods.Categories = this.goods.AllCategories();
+                goods.Towns = this.goods.AllTowns();
+                return View(goods);
+            }
             this.goods.Edit(
             id,
             goods.Title,

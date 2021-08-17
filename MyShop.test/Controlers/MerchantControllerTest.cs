@@ -1,14 +1,14 @@
 ﻿namespace MyShop.test.Controlers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using MyShop.Controllers;
     using MyShop.Data.Models;
     using MyShop.Models.Merchant;
     using MyShop.Services.Goods.Models;
     using MyTested.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
     using Xunit;
-
+    using static Data.GoodsData;
     public class MerchantControllerTest
     {
         [Fact]
@@ -59,9 +59,9 @@
         public void MyGoodsShouldReturnViewWithCorectData()
             => MyController<MerchantController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
-                                .WithEntities(new Merchant { Id = 1, UserId = TestUser.Identifier },
+                                .WithEntities(Merchant(TestUser.Identifier),
                                               new Goods { MerchantId = 1 })))
                     .Calling(c => c.MyGoods())
                     .ShouldHave()
@@ -76,9 +76,9 @@
         public void MySalesShouldReturnViewWithCorectData()
             => MyController<MerchantController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
-                                .WithEntities(new Merchant { Id = 1, UserId = TestUser.Identifier },
+                                .WithEntities(Merchant(TestUser.Identifier),
                                               new Goods {Id = "goodsId" , MerchantId = 1 },
                                               new Purchase { GoodsId = "goodsId"})))
                     .Calling(c => c.MySales())

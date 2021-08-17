@@ -15,7 +15,7 @@
         public void MyPurchasesShouldReturnViewWithCorectData()
             => MyController<BuyerController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
                                 .WithEntities(new Goods { Id = "goodsId" },
                                               new Purchase { GoodsId = "goodsId", BuyerId = TestUser.Identifier })))
@@ -33,7 +33,7 @@
         public void BuyShouldReturnViewWithCorectData(string goodsId)
             => MyController<BuyerController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
                                 .WithEntities(new Goods { Id = goodsId })))
                     .Calling(c => c.Buy(goodsId))
@@ -50,7 +50,7 @@
         public void PostBuyShouldCreatePurchaseAndRedirectToCorectAction(string goodsId, int pieces, decimal price)
             => MyController<BuyerController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
                                 .WithEntities(new Goods { Id = goodsId, Pieces = pieces, Price = price })))
                     .Calling(c => c.Buy(goodsId, new PurchaseViewModel { Pieces = pieces }))
@@ -75,7 +75,7 @@
         public void PostBuyShouldReturnViewWithZeroPiecesInModel(string goodsId, int pieces)
             => MyController<BuyerController>
                     .Instance(controller => controller
-                            .WithUser(TestUser.Identifier)
+                            .WithUser()
                             .WithData(data => data
                                 .WithEntities(new Goods { Id = goodsId, Pieces = 1 })))
                     .Calling(c => c.Buy(goodsId, new PurchaseViewModel { Pieces = pieces }))
