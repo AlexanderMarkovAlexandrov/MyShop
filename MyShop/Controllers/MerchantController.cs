@@ -20,7 +20,6 @@
             this.purchase = purchase;
         }
 
-
         [Authorize]
         public IActionResult Create() => View();
 

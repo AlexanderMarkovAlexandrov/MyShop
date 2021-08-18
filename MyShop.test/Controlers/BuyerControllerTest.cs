@@ -46,6 +46,18 @@
                     .Passing(m => m.goods.Id == goodsId));
 
         [Theory]
+        [InlineData("goodsId", "InvalidId")]
+        public void BuyShouldReturnBedRequestIfGoodsWithIdDontExists(string goodsId, string invalidId)
+            => MyController<BuyerController>
+                    .Instance(controller => controller
+                            .WithUser()
+                            .WithData(data => data
+                                .WithEntities(new Goods { Id = goodsId })))
+                    .Calling(c => c.Buy(invalidId))
+                    .ShouldReturn()
+                    .BadRequest();
+
+        [Theory]
         [InlineData("goodsId", 1, 10)]
         public void PostBuyShouldCreatePurchaseAndRedirectToCorectAction(string goodsId, int pieces, decimal price)
             => MyController<BuyerController>
@@ -56,7 +68,8 @@
                     .Calling(c => c.Buy(goodsId, new PurchaseViewModel { Pieces = pieces }))
                     .ShouldHave()
                     .ActionAttributes(attribute => attribute
-                            .RestrictingForAuthorizedRequests())
+                            .RestrictingForAuthorizedRequests()
+                            .RestrictingForHttpMethod(HttpMethod.Post))
                     .ValidModelState()
                     .Data(data => data
                             .WithSet<Purchase>(purchase => purchase
@@ -69,6 +82,18 @@
                     .ShouldReturn()
                     .Redirect(redirect => redirect
                             .To<HomeController>(c => c.Index()));
+
+        [Theory]
+        [InlineData("goodsId", "InvalidId")]
+        public void PostBuyShouldReturnBedRequestIfGoodsWithIdDontExists(string goodsId, string invalidId)
+            => MyController<BuyerController>
+                    .Instance(controller => controller
+                            .WithUser()
+                            .WithData(data => data
+                                .WithEntities(new Goods { Id = goodsId  })))
+                    .Calling(c => c.Buy(invalidId, new PurchaseViewModel { }))
+                    .ShouldReturn()
+                    .BadRequest();
 
         [Theory]
         [InlineData("goodsId", 0)]

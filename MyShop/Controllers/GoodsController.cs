@@ -164,12 +164,12 @@
         public IActionResult Details(string id)
         {
             var goodsDetails = this.goods.Details(id);
-            goodsDetails.Pieces = 0;
             if (goodsDetails == null)
             {
                 return BadRequest();
             }
-           
+            goodsDetails.Pieces = 0;
+
             return View(goodsDetails);
         }
         [Authorize]

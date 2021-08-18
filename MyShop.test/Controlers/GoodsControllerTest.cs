@@ -36,6 +36,16 @@
                 .ShouldReturn()
                 .View(view => view.WithModelOfType<GoodsFormModel>());
 
+        [Fact]
+        public void AddShouldReturnBedrequestIfUserIsNotMerchant()
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(Merchant("InvalidUserId")))
+                .Calling(c => c.Add())
+                .ShouldReturn()
+                .BadRequest();
+
         [Theory]
         [InlineData("Title", 1, 2, "https://myshop.com/png/200.png", "Description of goods", 1, 1)]
         public void PostAddShouldCreateGoodsAndRedirectToCorectAction(
@@ -65,7 +75,8 @@
                 }))
                 .ShouldHave()
                 .ActionAttributes(attributs => attributs
-                        .RestrictingForAuthorizedRequests())
+                        .RestrictingForAuthorizedRequests()
+                        .RestrictingForHttpMethod(HttpMethod.Post))
                 .ValidModelState()
                 .Data(data => data
                         .WithSet<Goods>(goods => goods
@@ -130,7 +141,8 @@
                 }))
                 .ShouldHave()
                 .ActionAttributes(attributs => attributs
-                        .RestrictingForAuthorizedRequests())
+                        .RestrictingForAuthorizedRequests()
+                        .RestrictingForHttpMethod(HttpMethod.Post))
                 .ValidModelState()
                 .Data(data => data
                                 .WithSet<Goods>(goods => goods
@@ -139,6 +151,17 @@
                 .ShouldReturn()
                 .Redirect(redirect => redirect.
                                 To<GoodsController>(c=>c.Details(goodsId)));
+
+        [Theory]
+        [InlineData("GoodsId", "InvalidId")]
+        public void DetailsShouldReturnBedRequesWithInvalidId(string goodsId, string invalidId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithData(data => data
+                            .WithEntities(new Goods { Id = goodsId})))
+                .Calling(c => c.Details(invalidId))
+                .ShouldReturn()
+                .BadRequest();
 
         [Theory]
         [InlineData("GoodsId")]
@@ -163,6 +186,35 @@
                 .Passing(m => m.Id == goodsId));
 
         [Theory]
+        [InlineData("GoodsId", "InvalidId")]
+        public void DeleteShouldReturnBedRequestWithInvalidGoodsId(string goodsId, string invalidId)
+           => MyController<GoodsController>
+               .Instance(controller => controller
+                       .WithUser()
+                       .WithData(data => data
+                            .WithEntities(new Goods { Id = goodsId })))
+               .Calling(c => c.Delete(invalidId))
+               .ShouldReturn()
+               .BadRequest();
+
+        [Theory]
+        [InlineData("GoodsId", 2)]
+        public void DeleteShouldReturnBedRequestWithInvalidMerchant(string goodsId, int diferentMerchantId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(data => data
+                             .WithEntities(Merchant(TestUser.Identifier),
+                                           new Goods
+                                           {
+                                               Id = goodsId,
+                                               MerchantId = diferentMerchantId
+                                           })))
+                .Calling(c => c.Delete(goodsId))
+                .ShouldReturn()
+                .BadRequest();
+
+        [Theory]
         [InlineData("GoodsId")]
         public void DeleteConfirmShouldRemoveGoodsWithCorectDataAndRedirect(string goodsId)
             => MyController<GoodsController>
@@ -185,5 +237,34 @@
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect();
+
+        [Theory]
+        [InlineData("GoodsId", "InvalidId")]
+        public void DeleteConfirmShouldReturnBedRequestWithInvalidGoodsId(string goodsId, string invalidId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(data => data
+                             .WithEntities(new Goods  {Id = goodsId })))
+                .Calling(c => c.DeleteConfirm(invalidId))
+                .ShouldReturn()
+                .BadRequest();
+
+        [Theory]
+        [InlineData("GoodsId", 2)]
+        public void DeleteConfirmShouldReturnBedRequestWithInvalidMerchant(string goodsId, int diferentMerchantId)
+            => MyController<GoodsController>
+                .Instance(controller => controller
+                        .WithUser()
+                        .WithData(data => data
+                             .WithEntities(Merchant(TestUser.Identifier),
+                                           new Goods
+                                           {
+                                               Id = goodsId,
+                                               MerchantId = diferentMerchantId
+                                           })))
+                .Calling(c => c.DeleteConfirm(goodsId))
+                .ShouldReturn()
+                .BadRequest();
     }
 }

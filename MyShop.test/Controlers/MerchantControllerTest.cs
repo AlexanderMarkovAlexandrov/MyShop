@@ -53,6 +53,19 @@
                     .ShouldReturn()
                  .Redirect(redirect => redirect      
                             .To<HomeController>(c=> c.Index()));
+
+        [Fact]
+        public void PostCreateShouldReturnViewWithInvalidData()
+            => MyController<MerchantController>
+                    .Instance(controller => controller
+                            .WithUser()
+                            .WithData(data => data
+                                .WithEntities(Merchant(TestUser.Identifier))))
+                    .Calling(c => c.Create(new CreateMerchantFormModel { }))
+                    .ShouldReturn()
+                    .View(view => view.WithModelOfType<CreateMerchantFormModel>());
+                    
+
         [Fact]
         public void MyGoodsShouldReturnViewWithCorectData()
             => MyController<MerchantController>
@@ -87,5 +100,14 @@
                     .ShouldReturn()
                     .View(view => view.WithModelOfType<MerchantSalesWiewModel>()
                     .Passing(m=> m.Goods.ToList().Count == 1));
+
+        [Fact]
+        public void MySalesShouldReturnUnauthorizedIfUserIsNotMerchant()
+            => MyController<MerchantController>
+                    .Instance(controller => controller
+                            .WithUser())
+                    .Calling(c => c.MySales())
+                    .ShouldReturn()
+                    .Unauthorized();
     }
 }
