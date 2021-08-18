@@ -12,22 +12,19 @@
     {
         [Fact]
         public void IndexShouldReturnViewWithCorectModelAndData()
-            => MyMvc
-                .Pipeline()
-                .ShouldMap("/")
-                .To<HomeController>(c=> c.Index())
-                .Which(controller => controller.WithData(TenMockGoods))
+            => MyController<HomeController>
+                .Instance(controller => controller
+                        .WithData(TenMockGoods))
+                .Calling(c=> c.Index())
                 .ShouldReturn()
                 .View(view => view.WithModelOfType<IEnumerable<GoodsServiceModel>>()
                 .Passing(m=>m.ToList().Count == 4));
 
         [Fact]
         public void ErrorShouldReturnView()
-            => MyMvc
-                .Pipeline()
-                .ShouldMap("/Home/Error")
-                .To<HomeController>(c => c.Error())
-                .Which()
+            => MyController<HomeController>
+                .Instance()
+                .Calling(c => c.Error())
                 .ShouldReturn()
                 .View();
     }

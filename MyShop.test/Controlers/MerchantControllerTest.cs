@@ -14,19 +14,16 @@
     {
         [Fact]
         public void CreateShouldReturnViewForRegistredUsers()
-                => MyMvc
-                    .Pipeline()
-                    .ShouldMap(request => request
-                            .WithPath("/Merchant/Create")
+            => MyController<MerchantController>
+                .Instance(controller => controller
                             .WithUser())
-                    .To<MerchantController>(c => c.Create())
-                    .Which()
-                    .ShouldHave()
-                    .ActionAttributes(attribute => attribute
-                            .RestrictingForAuthorizedRequests())
-                    .AndAlso()
-                    .ShouldReturn()
-                    .View();
+                .Calling(c => c.Create())
+                .ShouldHave()
+                .ActionAttributes(attribute => attribute
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View();
 
         [Theory]
         [InlineData("merchant", "+3599999999")]
@@ -37,10 +34,10 @@
                     .Instance(controller => controller
                             .WithUser())
                     .Calling(c => c.Create(new CreateMerchantFormModel
-                    {
-                        Name = name,
-                        PhoneNumber = phoneNumber
-                    }))
+                                   {
+                                       Name = name,
+                                       PhoneNumber = phoneNumber
+                                   }))
                     .ShouldHave()
                     .ActionAttributes(attribute => attribute
                             .RestrictingForAuthorizedRequests()
@@ -54,7 +51,7 @@
                                 m.UserId == TestUser.Identifier)))
                     .AndAlso()
                     .ShouldReturn()
-                    .Redirect(redirect => redirect      
+                 .Redirect(redirect => redirect      
                             .To<HomeController>(c=> c.Index()));
         [Fact]
         public void MyGoodsShouldReturnViewWithCorectData()
