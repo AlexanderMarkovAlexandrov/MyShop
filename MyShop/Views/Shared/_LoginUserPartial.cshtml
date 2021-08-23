@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+@if (!User.IsAdmin())
+{
+    <a class="text-dark" asp-area="" asp-controller="Goods" asp-action="All">All Goods</a>
+}
+else { }
